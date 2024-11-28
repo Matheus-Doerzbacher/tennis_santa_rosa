@@ -18,6 +18,8 @@ class UsuarioModel {
   final DateTime? dataUltimoJogo;
   final bool? venceuUltimoJogo;
   final int jogosNoMes;
+  final String? urlImage;
+  final bool isAdmin;
 
   UsuarioModel({
     this.uid,
@@ -33,6 +35,8 @@ class UsuarioModel {
     this.dataUltimoJogo,
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,
+    this.urlImage,
+    this.isAdmin = false,
   });
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +56,8 @@ class UsuarioModel {
           : null,
       venceuUltimoJogo: json['venceuUltimoJogo'],
       jogosNoMes: json['jogosNoMes'],
+      urlImage: json['urlImage'],
+      isAdmin: json['isAdmin'],
     );
   }
 
@@ -70,6 +76,8 @@ class UsuarioModel {
       'dataUltimoJogo': dataUltimoJogo?.toIso8601String(),
       'venceuUltimoJogo': venceuUltimoJogo,
       'jogosNoMes': jogosNoMes,
+      'urlImage': urlImage,
+      'isAdmin': isAdmin,
     };
   }
 
@@ -87,6 +95,8 @@ class UsuarioModel {
     DateTime? dataUltimoJogo,
     bool? venceuUltimoJogo,
     int? jogosNoMes,
+    String? urlImage,
+    bool? isAdmin,
   }) {
     return UsuarioModel(
       uid: uid ?? this.uid,
@@ -103,6 +113,8 @@ class UsuarioModel {
       dataUltimoJogo: dataUltimoJogo ?? this.dataUltimoJogo,
       venceuUltimoJogo: venceuUltimoJogo ?? this.venceuUltimoJogo,
       jogosNoMes: jogosNoMes ?? this.jogosNoMes,
+      urlImage: urlImage ?? this.urlImage,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 }
