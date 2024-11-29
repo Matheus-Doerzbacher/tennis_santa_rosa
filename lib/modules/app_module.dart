@@ -7,6 +7,6 @@ class AppModule extends Module {
   void routes(RouteManager r) {
     r
       ..module(Modular.initialRoute, module: HomeModule())
-      ..module('/usuario/', module: UsuarioModule());
+      ..module('/usuario', module: UsuarioModule());
   }
 }

@@ -12,8 +12,8 @@ class HomePage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-              onPressed: () {
-                Modular.to.pushNamed('/usuario/upsert-usuario/');
+              onPressed: () async {
+                Modular.to.navigate('/usuario/upsert-usuario');
               },
               child: const Text('Adicionar Jogador'),
             ),
