@@ -1,7 +1,7 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/usuario/view/detail_usuario_page.dart';
 import 'package:tennis_santa_rosa/modules/usuario/view/login_page.dart';
-import 'package:tennis_santa_rosa/modules/usuario/view/upsert_usuario_page.dart';
+import 'package:tennis_santa_rosa/modules/usuario/view/upsert_usuario/upsert_usuario_page.dart';
 
 class UsuarioModule extends Module {
   @override
