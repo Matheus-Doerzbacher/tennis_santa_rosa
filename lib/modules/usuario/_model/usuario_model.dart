@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+
 enum Situacao {
   ferias,
   machucado,
@@ -5,45 +9,52 @@ enum Situacao {
 }
 
 class UsuarioModel {
-  final String? uid;
-  final String nome;
-  final String email;
-  final String senha;
-  final String telefone;
-  final Situacao situacao;
-  final DateTime dataCriacao;
-  final int posicaoRankingAtual;
-  final int posicaoRankingAnterior;
-  final bool temDesafio;
-  final DateTime? dataUltimoJogo;
-  final bool? venceuUltimoJogo;
-  final int jogosNoMes;
-  final String? urlImage;
-  final bool isAdmin;
+  String? uid;
+  String? nome;
+  String login;
+  String senha;
+  String? telefone;
+  Situacao situacao;
+  DateTime dataCriacao;
+  int posicaoRankingAtual;
+  int? posicaoRankingAnterior;
+  bool? temDesafio;
+  DateTime? dataUltimoJogo;
+  bool? venceuUltimoJogo;
+  int? jogosNoMes;
+  String? urlImage;
+  bool? isAdmin;
 
   UsuarioModel({
     this.uid,
-    required this.nome,
-    required this.email,
-    required this.senha,
-    required this.telefone,
-    required this.situacao,
-    required this.dataCriacao,
+    this.nome,
+    required this.login,
+    senha,
+    this.telefone,
+    this.situacao = Situacao.ativo,
+    DateTime? dataCriacao,
     required this.posicaoRankingAtual,
-    required this.posicaoRankingAnterior,
+    this.posicaoRankingAnterior,
     this.temDesafio = false,
     this.dataUltimoJogo,
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,
     this.urlImage,
     this.isAdmin = false,
-  });
+  })  : dataCriacao = dataCriacao ?? DateTime.now(),
+        senha = _encryptPassword(senha);
+
+  static String _encryptPassword(String password) {
+    final bytes = utf8.encode(password);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
     return UsuarioModel(
       uid: json['uid'],
       nome: json['nome'],
-      email: json['email'],
+      login: json['login'],
       senha: json['senha'],
       telefone: json['telefone'],
       situacao: Situacao.values[json['situacao']],
@@ -65,7 +76,7 @@ class UsuarioModel {
     return {
       'uid': uid,
       'nome': nome,
-      'email': email,
+      'login': login,
       'senha': senha,
       'telefone': telefone,
       'situacao': situacao.index,
@@ -84,7 +95,7 @@ class UsuarioModel {
   UsuarioModel copyWith({
     String? uid,
     String? nome,
-    String? email,
+    String? login,
     String? senha,
     String? telefone,
     Situacao? situacao,
@@ -101,8 +112,8 @@ class UsuarioModel {
     return UsuarioModel(
       uid: uid ?? this.uid,
       nome: nome ?? this.nome,
-      email: email ?? this.email,
-      senha: senha ?? this.senha,
+      login: login ?? this.login,
+      senha: senha != null ? _encryptPassword(senha) : this.senha,
       telefone: telefone ?? this.telefone,
       situacao: situacao ?? this.situacao,
       dataCriacao: dataCriacao ?? this.dataCriacao,

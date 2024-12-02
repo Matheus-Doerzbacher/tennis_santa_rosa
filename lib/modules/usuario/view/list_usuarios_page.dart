@@ -10,6 +10,22 @@ class ListUsuariosPage extends StatelessWidget {
     final controller = context.watch<UsuarioController>();
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Modular.to.navigate('/'),
+          icon: const Icon(Icons.arrow_back),
+        ),
+        title: const Text('Jogadores'),
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              await Modular.to.pushNamed('/usuario/add-usuario');
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Adicionar'),
+          ),
+        ],
+      ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -17,20 +33,30 @@ class ListUsuariosPage extends StatelessWidget {
             if (controller.isLoading)
               const CircularProgressIndicator()
             else if (controller.usuarios.isNotEmpty)
-              ListView.builder(
-                itemCount: controller.usuarios.length,
-                itemBuilder: (context, index) {
-                  return Text(controller.usuarios[index]?.nome ?? '');
-                },
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: ListView.builder(
+                    itemCount: controller.usuarios.length,
+                    itemBuilder: (context, index) {
+                      final usuario = controller.usuarios[index];
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(usuario?.login ?? ''),
+                            subtitle: Text(
+                              usuario?.posicaoRankingAtual.toString() ?? '',
+                            ),
+                          ),
+                          const Divider(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               )
             else
               const Text('Não foram encontrados usuarios'),
-            ElevatedButton(
-              onPressed: () async {
-                await Modular.to.pushNamed('/usuario/upsert-usuario');
-              },
-              child: const Text('Adicionar Jogador'),
-            ),
           ],
         ),
       ),

@@ -12,8 +12,8 @@ class AdminPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                await Modular.to.pushNamed('/usuario/list-usuarios');
+              onPressed: () {
+                Modular.to.navigate('/usuario/list-usuarios');
               },
               child: const Text('Jogadores'),
             ),
