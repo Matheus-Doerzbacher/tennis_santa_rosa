@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class AdminPage extends StatelessWidget {
+  const AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +13,9 @@ class HomePage extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () async {
-                Modular.to.navigate('/usuario/upsert-usuario');
+                await Modular.to.pushNamed('/usuario/list-usuarios');
               },
-              child: const Text('Adicionar Jogador'),
+              child: const Text('Jogadores'),
             ),
           ],
         ),
