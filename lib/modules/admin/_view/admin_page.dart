@@ -17,6 +17,12 @@ class AdminPage extends StatelessWidget {
               },
               child: const Text('Jogadores'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Modular.to.navigate('/usuario/login/');
+              },
+              child: const Text('Login'),
+            ),
           ],
         ),
       ),
