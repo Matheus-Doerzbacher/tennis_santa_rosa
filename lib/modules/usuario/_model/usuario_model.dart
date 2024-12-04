@@ -29,7 +29,7 @@ class UsuarioModel {
     this.uid,
     this.nome,
     required this.login,
-    senha,
+    required String senha,
     this.telefone,
     this.situacao = Situacao.ativo,
     DateTime? dataCriacao,
@@ -42,16 +42,16 @@ class UsuarioModel {
     this.urlImage,
     this.isAdmin = false,
   })  : dataCriacao = dataCriacao ?? DateTime.now(),
-        senha = _encryptPassword(senha);
+        senha = encryptPassword(senha);
 
-  static String _encryptPassword(String password) {
+  static String encryptPassword(String password) {
     final bytes = utf8.encode(password);
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    return UsuarioModel(
+    return UsuarioModel._(
       uid: json['uid'],
       nome: json['nome'],
       login: json['login'],
@@ -71,6 +71,24 @@ class UsuarioModel {
       isAdmin: json['isAdmin'],
     );
   }
+
+  UsuarioModel._({
+    this.uid,
+    this.nome,
+    required this.login,
+    required this.senha,
+    this.telefone,
+    this.situacao = Situacao.ativo,
+    required this.dataCriacao,
+    required this.posicaoRankingAtual,
+    this.posicaoRankingAnterior,
+    this.temDesafio = false,
+    this.dataUltimoJogo,
+    this.venceuUltimoJogo,
+    this.jogosNoMes = 0,
+    this.urlImage,
+    this.isAdmin = false,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -113,7 +131,7 @@ class UsuarioModel {
       uid: uid ?? this.uid,
       nome: nome ?? this.nome,
       login: login ?? this.login,
-      senha: senha != null ? _encryptPassword(senha) : this.senha,
+      senha: senha != null ? encryptPassword(senha) : this.senha,
       telefone: telefone ?? this.telefone,
       situacao: situacao ?? this.situacao,
       dataCriacao: dataCriacao ?? this.dataCriacao,
