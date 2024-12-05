@@ -51,69 +51,71 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         color: Colors.white,
         child: Center(
-          child: Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(34),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/images/logo.png',
-                    width: 300,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _loginController,
-                    decoration: const InputDecoration(
-                      labelText: 'Login',
-                      border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(34),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 300,
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Login é obrigatório';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _loginController,
+                      decoration: const InputDecoration(
+                        labelText: 'Login',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Login é obrigatório';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
+                      ),
+                      obscureText: !_isPasswordVisible,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Senha é obrigatória';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: onSubmit,
+                        child: watch.isLoading
+                            ? const CircularProgressIndicator()
+                            : const Text('Entrar'),
                       ),
                     ),
-                    obscureText: !_isPasswordVisible,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Senha é obrigatória';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: onSubmit,
-                      child: watch.isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('Entrar'),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
