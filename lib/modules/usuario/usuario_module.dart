@@ -48,27 +48,3 @@ class UsuarioModule extends Module {
       );
   }
 }
-
-// class AuthGuard extends RouteGuard {
-//   AuthGuard() : super(redirectTo: '/login/');
-
-//   @override
-//   Future<bool> canActivate(String path, ModularRoute route) async {
-//     final controller = Modular.get<AuthController>();
-//     if (!controller.isAuthenticated) {
-//       await controller.load();
-//     }
-
-//     return controller.isAuthenticated;
-//   }
-// }
-
-// class LoginGuard extends RouteGuard {
-//   LoginGuard() : super(redirectTo: '/');
-
-//   @override
-//   Future<bool> canActivate(String path, ModularRoute route) async {
-//     final controller = Modular.get<AuthController>();
-//     return !controller.isAuthenticated;
-//   }
-// }
