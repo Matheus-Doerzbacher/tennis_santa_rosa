@@ -25,7 +25,11 @@ class UsuarioController extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _usuarios = await fetchUsuariosRepository.call();
+      _usuarios = await fetchUsuariosRepository();
+      _usuarios.sort(
+        (a, b) => a!.posicaoRankingAtual.compareTo(b!.posicaoRankingAtual),
+      );
+      notifyListeners();
     } catch (e) {
       dbPrint(e);
       throw Exception(e);

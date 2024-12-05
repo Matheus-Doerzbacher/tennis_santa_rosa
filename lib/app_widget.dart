@@ -9,9 +9,13 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: Modular.routerConfig,
-      title: 'Flutter Demo',
+      title: 'Ranking Santa Rosa',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 11, 48, 153),
+        ).copyWith(
+          primary: const Color.fromARGB(255, 11, 48, 153),
+        ),
         useMaterial3: true,
       ),
     );

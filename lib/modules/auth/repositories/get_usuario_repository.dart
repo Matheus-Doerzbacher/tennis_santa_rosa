@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
-class GetUsuarioRepository {
+class GetUsuarioByLoginRepository {
   Future<UsuarioModel?> call(String login) async {
     final firestore = FirebaseFirestore.instance;
 

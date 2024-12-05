@@ -145,7 +145,10 @@ class _AddUsuarioPageState extends State<AddUsuarioPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () => Modular.to.navigate('/usuario/list-usuarios'),
+              onPressed: () => {
+                Modular.to.pop(),
+                Modular.to.pop(),
+              },
               child: const Text('Voltar ao Início'),
             ),
             FilledButton(
@@ -156,7 +159,8 @@ class _AddUsuarioPageState extends State<AddUsuarioPage> {
 
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri);
-                  Modular.to.navigate('/usuario/list-usuarios');
+                  Modular.to.pop();
+                  Modular.to.pop();
                 } else {
                   throw Exception('Could not launch $whatsappUrl');
                 }

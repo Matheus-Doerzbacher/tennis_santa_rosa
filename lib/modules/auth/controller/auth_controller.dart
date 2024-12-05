@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/repository.dart';
+import 'package:tennis_santa_rosa/modules/auth/repositories/get_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_repository.dart';
 
 class AuthController extends ChangeNotifier {
-  final GetUsuarioRepository _getUsuarioRepository;
+  final GetUsuarioByLoginRepository _getUsuarioByLoginRepository;
 
-  AuthController(this._getUsuarioRepository);
+  AuthController(this._getUsuarioByLoginRepository);
 
-  static UsuarioModel? _usuario;
-  static UsuarioModel? get usuario => _usuario;
+  UsuarioModel? _usuario;
+  UsuarioModel? get usuario => _usuario;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  bool get isAuthenticated => usuario != null;
 
   // Realiza o login
   Future<bool> login(String login, String senha) async {
     _isLoading = true;
     notifyListeners();
     try {
-      final usuario = await _getUsuarioRepository(login);
+      final usuario = await _getUsuarioByLoginRepository(login);
 
       final senhaCriptografada = UsuarioModel.encryptPassword(senha);
 

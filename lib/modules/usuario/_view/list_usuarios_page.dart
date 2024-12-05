@@ -11,10 +11,6 @@ class ListUsuariosPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Modular.to.navigate('/'),
-          icon: const Icon(Icons.arrow_back),
-        ),
         title: const Text('Jogadores'),
         actions: [
           TextButton.icon(

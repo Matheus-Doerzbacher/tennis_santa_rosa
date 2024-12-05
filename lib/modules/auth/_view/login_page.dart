@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tennis_santa_rosa/modules/usuario/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -48,25 +48,19 @@ class _LoginPageState extends State<LoginPage> {
     final watch = context.watch<AuthController>();
 
     return Scaffold(
-      body: Center(
-        child: Card(
-          elevation: 8,
-          margin: const EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+      body: Container(
+        color: Colors.white,
+        child: Center(
           child: Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(34),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Ranking Santa Rosa',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 300,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
@@ -110,11 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: onSubmit,
-                    child: watch.isLoading
-                        ? const CircularProgressIndicator()
-                        : const Text('Entrar'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: onSubmit,
+                      child: watch.isLoading
+                          ? const CircularProgressIndicator()
+                          : const Text('Entrar'),
+                    ),
                   ),
                 ],
               ),
