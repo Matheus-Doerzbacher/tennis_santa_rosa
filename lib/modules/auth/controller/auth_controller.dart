@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/repository.dart';
 import 'package:tennis_santa_rosa/modules/auth/repositories/get_usuario_repository.dart';
@@ -26,19 +27,34 @@ class AuthController extends ChangeNotifier {
   Future<bool> login(String login, String senha) async {
     _isLoading = true;
     notifyListeners();
+    UsuarioModel? usuario;
     try {
-      final usuario = await _getUsuarioByLoginRepository(login);
+      if (login == Env.userLogin && senha == Env.userPassword) {
+        usuario = UsuarioModel(
+          login: login,
+          senha: senha,
+          posicaoRankingAtual: 0,
+          nome: 'Admin',
+          isAdmin: true,
+        );
+      } else {
+        usuario = await _getUsuarioByLoginRepository(login);
 
-      final senhaCriptografada = UsuarioModel.encryptPassword(senha);
+        final senhaCriptografada = UsuarioModel.encryptPassword(senha);
 
-      if (usuario != null && usuario.senha == senhaCriptografada) {
-        final usuarioJson = usuario.toJson();
-        await Repository.save('usuario', usuarioJson);
-        _usuario = usuario;
-        notifyListeners();
-        return true;
+        if (usuario?.senha == null || usuario?.senha != senhaCriptografada) {
+          return false;
+        }
       }
-      return false;
+
+      if (usuario == null) {
+        return false;
+      }
+
+      await Repository.save('usuario', usuario.toJson());
+      _usuario = usuario;
+      notifyListeners();
+      return true;
     } catch (e) {
       dbPrint(e);
       return false;
@@ -76,6 +92,7 @@ class AuthController extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       await Repository.remove('usuario');
+      dbPrint(await Repository.read('usuario'));
       _usuario = null;
       notifyListeners();
       return true;

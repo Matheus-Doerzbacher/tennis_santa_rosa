@@ -23,13 +23,6 @@ class AdminPage extends StatelessWidget {
               },
               child: const Text('Jogadores'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                controller.logout();
-                Modular.to.navigate('/auth/login/');
-              },
-              child: const Text('Logout'),
-            ),
           ],
         ),
       ),

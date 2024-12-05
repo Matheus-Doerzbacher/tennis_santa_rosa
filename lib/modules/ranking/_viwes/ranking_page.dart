@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 
 class RankingPage extends StatefulWidget {
@@ -45,9 +46,17 @@ class _RankingPageState extends State<RankingPage> {
                 },
               ),
             ),
+            if (Modular.get<AuthController>().usuario?.isAdmin == true)
+              ElevatedButton(
+                onPressed: () => Modular.to.pushNamed('/admin/'),
+                child: const Text('Admin Page'),
+              ),
             ElevatedButton(
-              onPressed: () => Modular.to.pushNamed('/admin/'),
-              child: const Text('Admin Page'),
+              onPressed: () {
+                Modular.get<AuthController>().logout();
+                Modular.to.navigate('/auth/login/');
+              },
+              child: const Text('Logout'),
             ),
             const SizedBox(height: 50),
           ],

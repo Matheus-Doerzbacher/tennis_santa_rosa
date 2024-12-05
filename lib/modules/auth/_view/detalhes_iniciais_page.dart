@@ -83,6 +83,9 @@ class _DetalhesIniciaisPageState extends State<DetalhesIniciaisPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
+                    '${Modular.get<AuthController>().usuario?.login}',
+                  ),
+                  Text(
                     'Por favor complete os seguintes dados para continuar',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(

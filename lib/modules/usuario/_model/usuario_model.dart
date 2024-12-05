@@ -18,12 +18,12 @@ class UsuarioModel {
   DateTime dataCriacao;
   int posicaoRankingAtual;
   int? posicaoRankingAnterior;
-  bool? temDesafio;
+  bool temDesafio;
   DateTime? dataUltimoJogo;
   bool? venceuUltimoJogo;
-  int? jogosNoMes;
+  int jogosNoMes;
   String? urlImage;
-  bool? isAdmin;
+  bool isAdmin;
 
   UsuarioModel({
     this.uid,
