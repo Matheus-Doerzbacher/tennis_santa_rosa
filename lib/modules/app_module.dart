@@ -9,6 +9,7 @@ class AppModule extends Module {
   @override
   void binds(Injector i) {
     AuthModule().binds(i);
+    UsuarioModule().binds(i);
   }
 
   @override

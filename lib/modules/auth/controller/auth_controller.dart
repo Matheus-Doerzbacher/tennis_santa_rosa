@@ -3,11 +3,16 @@ import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/repository.dart';
 import 'package:tennis_santa_rosa/modules/auth/repositories/get_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
 
 class AuthController extends ChangeNotifier {
   final GetUsuarioByLoginRepository _getUsuarioByLoginRepository;
+  final UpdateUsuarioRepository _updateUsuarioRepository;
 
-  AuthController(this._getUsuarioByLoginRepository);
+  AuthController(
+    this._getUsuarioByLoginRepository,
+    this._updateUsuarioRepository,
+  );
 
   UsuarioModel? _usuario;
   UsuarioModel? get usuario => _usuario;
@@ -74,6 +79,26 @@ class AuthController extends ChangeNotifier {
       _usuario = null;
       notifyListeners();
       return true;
+    } catch (e) {
+      dbPrint(e);
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> updateUsuario(UsuarioModel usuario) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final result = await _updateUsuarioRepository(usuario);
+      if (result) {
+        _usuario = usuario;
+        await Repository.save('usuario', usuario.toJson());
+        return true;
+      }
+      return false;
     } catch (e) {
       dbPrint(e);
       return false;

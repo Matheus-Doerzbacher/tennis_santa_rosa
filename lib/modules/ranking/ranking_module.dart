@@ -28,7 +28,7 @@ class RankingModule extends Module {
 }
 
 class NameGuard extends RouteGuard {
-  NameGuard() : super(redirectTo: '/usuario/detail-usuario');
+  NameGuard() : super(redirectTo: '/auth/config');
 
   @override
   Future<bool> canActivate(String path, ModularRoute route) async {
