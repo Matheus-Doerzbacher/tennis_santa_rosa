@@ -15,15 +15,18 @@ class RankingController extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<void> getRanking() async {
+  Stream<void> getRanking() async* {
     _isLoading = true;
     notifyListeners();
     try {
-      _jogadores = await _fetchUsuariosRepository();
-      _jogadores.sort(
-        (a, b) => a.posicaoRankingAtual.compareTo(b.posicaoRankingAtual),
-      );
-      notifyListeners();
+      await for (final jogadores in _fetchUsuariosRepository()) {
+        _jogadores = jogadores;
+        _jogadores.sort(
+          (a, b) => a.posicaoRankingAtual.compareTo(b.posicaoRankingAtual),
+        );
+        notifyListeners();
+        yield null; // Emite um valor nulo para indicar que há uma atualização
+      }
     } catch (e) {
       dbPrint(e);
     } finally {

@@ -27,7 +27,7 @@ class UsuarioModel {
   int jogosNoMes;
   // desafio
   bool temDesafio;
-  UsuarioModel? desafiante;
+  String? uidDesafiante;
 
   UsuarioModel({
     // informacoes do usuario
@@ -48,7 +48,7 @@ class UsuarioModel {
     this.jogosNoMes = 0,
     // desafio
     this.temDesafio = false,
-    this.desafiante,
+    this.uidDesafiante,
   })  : dataCriacao = dataCriacao ?? DateTime.now(),
         senha = encryptPassword(senha);
 
@@ -80,9 +80,7 @@ class UsuarioModel {
       jogosNoMes: json['jogosNoMes'],
       // desafio
       temDesafio: json['temDesafio'],
-      desafiante: json['desafiante'] != null
-          ? UsuarioModel.fromJson(json['desafiante'])
-          : null,
+      uidDesafiante: json['uidDesafiante'],
     )..senha = json['senha'];
 
     return usuario;
@@ -105,7 +103,7 @@ class UsuarioModel {
       'jogosNoMes': jogosNoMes,
       'urlImage': urlImage,
       'isAdmin': isAdmin,
-      'desafiante': desafiante?.toJson(),
+      'uidDesafiante': uidDesafiante,
     };
   }
 
@@ -125,7 +123,7 @@ class UsuarioModel {
     int? jogosNoMes,
     String? urlImage,
     bool? isAdmin,
-    UsuarioModel? desafiante,
+    String? uidDesafiante,
   }) {
     return UsuarioModel(
       uid: uid ?? this.uid,
@@ -144,7 +142,7 @@ class UsuarioModel {
       jogosNoMes: jogosNoMes ?? this.jogosNoMes,
       urlImage: urlImage ?? this.urlImage,
       isAdmin: isAdmin ?? this.isAdmin,
-      desafiante: desafiante ?? this.desafiante,
+      uidDesafiante: uidDesafiante ?? this.uidDesafiante,
     );
   }
 }

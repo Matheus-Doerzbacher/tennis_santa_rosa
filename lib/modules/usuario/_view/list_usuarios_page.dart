@@ -26,33 +26,35 @@ class ListUsuariosPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (controller.isLoading)
-              const CircularProgressIndicator()
-            else if (controller.usuarios.isNotEmpty)
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: ListView.builder(
-                    itemCount: controller.usuarios.length,
-                    itemBuilder: (context, index) {
-                      final usuario = controller.usuarios[index];
-                      return Column(
-                        children: [
-                          ListTile(
-                            title: Text(usuario?.login ?? ''),
-                            subtitle: Text(
-                              usuario?.posicaoRankingAtual.toString() ?? '',
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: StreamBuilder<void>(
+                  stream: controller.fetchUsuarios(),
+                  builder: (context, snapshot) {
+                    final usuarios = controller.usuarios;
+                    return ListView.builder(
+                      itemCount: usuarios.length,
+                      itemBuilder: (context, index) {
+                        final usuario = usuarios[index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title:
+                                  Text(usuario?.nome ?? usuario?.login ?? ''),
+                              subtitle: Text(
+                                usuario?.posicaoRankingAtual.toString() ?? '',
+                              ),
                             ),
-                          ),
-                          const Divider(),
-                        ],
-                      );
-                    },
-                  ),
+                            const Divider(),
+                          ],
+                        );
+                      },
+                    );
+                  },
                 ),
-              )
-            else
-              const Text('Não foram encontrados usuarios'),
+              ),
+            ),
           ],
         ),
       ),
