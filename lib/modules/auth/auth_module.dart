@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:tennis_santa_rosa/modules/auth/_view/detalhes_iniciais_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/_view/login_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/auth/repositories/get_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
 
 class AuthModule extends Module {
@@ -12,11 +11,7 @@ class AuthModule extends Module {
 
   @override
   void binds(Injector i) {
-    i
-      ..add(GetUsuarioByLoginRepository.new)
-
-      // CONTROLLERS
-      ..addLazySingleton(() => AuthController(i(), i()));
+    i.addLazySingleton(() => AuthController(i(), i()));
   }
 
   @override

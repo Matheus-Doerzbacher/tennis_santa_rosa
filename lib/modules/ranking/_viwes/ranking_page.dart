@@ -19,6 +19,74 @@ class _RankingPageState extends State<RankingPage> {
         );
   }
 
+  dynamic positionRanking(int posicaoRankingAtual) {
+    if (posicaoRankingAtual == 1) {
+      return const Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(
+            Icons.emoji_events,
+            color: Colors.yellow,
+            size: 30,
+          ),
+          Positioned(
+            top: 3,
+            child: Text('1'),
+          ),
+        ],
+      );
+    } else if (posicaoRankingAtual == 2) {
+      return const Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(
+            Icons.emoji_events,
+            color: Colors.grey,
+            size: 30,
+          ),
+          Positioned(
+            top: 3,
+            child: Text(
+              '2',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
+      );
+    } else if (posicaoRankingAtual == 3) {
+      return const Stack(
+        alignment: Alignment.center,
+        children: [
+          Icon(
+            Icons.emoji_events,
+            color: Colors.orange,
+            size: 30,
+          ),
+          Positioned(
+            top: 3,
+            child: Text('3'),
+          ),
+        ],
+      );
+    } else {
+      return Container(
+        margin: const EdgeInsets.only(left: 5),
+        width: 20,
+        height: 20,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          posicaoRankingAtual.toString(),
+          style: Theme.of(context).textTheme.bodyMedium,
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<RankingController>();
@@ -39,9 +107,10 @@ class _RankingPageState extends State<RankingPage> {
                 itemBuilder: (context, index) {
                   final jogador = controller.jogadores[index];
                   return ListTile(
-                    leading: Text(jogador.posicaoRankingAtual.toString()),
-                    title: Text(jogador.login),
-                    subtitle: Text(jogador.jogosNoMes.toString()),
+                    leading: positionRanking(jogador.posicaoRankingAtual),
+                    title: Text(jogador.nome ?? jogador.login),
+                    subtitle: Text('Jogos no mês: ${jogador.jogosNoMes}'),
+                    trailing: Text(jogador.temDesafio ? '✅' : '❌'),
                   );
                 },
               ),

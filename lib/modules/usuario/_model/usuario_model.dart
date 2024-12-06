@@ -9,38 +9,46 @@ enum Situacao {
 }
 
 class UsuarioModel {
+  // informacoes do usuario
   String? uid;
   String? nome;
   String login;
   String senha;
   String? telefone;
-  Situacao situacao;
   DateTime dataCriacao;
+  String? urlImage;
+  bool isAdmin;
+  // ranking
+  Situacao situacao;
   int posicaoRankingAtual;
   int? posicaoRankingAnterior;
-  bool temDesafio;
   DateTime? dataUltimoJogo;
   bool? venceuUltimoJogo;
   int jogosNoMes;
-  String? urlImage;
-  bool isAdmin;
+  // desafio
+  bool temDesafio;
+  UsuarioModel? desafiante;
 
   UsuarioModel({
+    // informacoes do usuario
     this.uid,
     this.nome,
     required this.login,
     required String senha,
     this.telefone,
-    this.situacao = Situacao.ativo,
     DateTime? dataCriacao,
+    this.urlImage,
+    this.isAdmin = false,
+    // ranking
+    this.situacao = Situacao.ativo,
     required this.posicaoRankingAtual,
     this.posicaoRankingAnterior,
-    this.temDesafio = false,
     this.dataUltimoJogo,
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,
-    this.urlImage,
-    this.isAdmin = false,
+    // desafio
+    this.temDesafio = false,
+    this.desafiante,
   })  : dataCriacao = dataCriacao ?? DateTime.now(),
         senha = encryptPassword(senha);
 
@@ -51,44 +59,32 @@ class UsuarioModel {
   }
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    return UsuarioModel._(
+    return UsuarioModel(
+      // informacoes do usuario
       uid: json['uid'],
       nome: json['nome'],
       login: json['login'],
       senha: json['senha'],
       telefone: json['telefone'],
-      situacao: Situacao.values[json['situacao']],
       dataCriacao: DateTime.parse(json['dataCriacao']),
+      urlImage: json['urlImage'],
+      isAdmin: json['isAdmin'],
+      // ranking
+      situacao: Situacao.values[json['situacao']],
       posicaoRankingAtual: json['posicaoRankingAtual'],
       posicaoRankingAnterior: json['posicaoRankingAnterior'],
-      temDesafio: json['temDesafio'],
       dataUltimoJogo: json['dataUltimoJogo'] != null
           ? DateTime.parse(json['dataUltimoJogo'])
           : null,
       venceuUltimoJogo: json['venceuUltimoJogo'],
       jogosNoMes: json['jogosNoMes'],
-      urlImage: json['urlImage'],
-      isAdmin: json['isAdmin'],
+      // desafio
+      temDesafio: json['temDesafio'],
+      desafiante: json['desafiante'] != null
+          ? UsuarioModel.fromJson(json['desafiante'])
+          : null,
     );
   }
-
-  UsuarioModel._({
-    this.uid,
-    this.nome,
-    required this.login,
-    required this.senha,
-    this.telefone,
-    this.situacao = Situacao.ativo,
-    required this.dataCriacao,
-    required this.posicaoRankingAtual,
-    this.posicaoRankingAnterior,
-    this.temDesafio = false,
-    this.dataUltimoJogo,
-    this.venceuUltimoJogo,
-    this.jogosNoMes = 0,
-    this.urlImage,
-    this.isAdmin = false,
-  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -107,6 +103,7 @@ class UsuarioModel {
       'jogosNoMes': jogosNoMes,
       'urlImage': urlImage,
       'isAdmin': isAdmin,
+      'desafiante': desafiante?.toJson(),
     };
   }
 
@@ -126,6 +123,7 @@ class UsuarioModel {
     int? jogosNoMes,
     String? urlImage,
     bool? isAdmin,
+    UsuarioModel? desafiante,
   }) {
     return UsuarioModel(
       uid: uid ?? this.uid,
@@ -144,6 +142,7 @@ class UsuarioModel {
       jogosNoMes: jogosNoMes ?? this.jogosNoMes,
       urlImage: urlImage ?? this.urlImage,
       isAdmin: isAdmin ?? this.isAdmin,
+      desafiante: desafiante ?? this.desafiante,
     );
   }
 }

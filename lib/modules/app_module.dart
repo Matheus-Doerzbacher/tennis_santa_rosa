@@ -18,7 +18,7 @@ class AppModule extends Module {
       ..module(
         Modular.initialRoute,
         module: RankingModule(),
-        guards: [AuthGuard(), NameGuard()],
+        guards: [NameGuard(), AuthGuard()],
       )
       ..module(
         '/admin',
@@ -54,7 +54,12 @@ class NameGuard extends RouteGuard {
   @override
   Future<bool> canActivate(String path, ModularRoute route) async {
     final controller = Modular.get<AuthController>();
+
+    if (!controller.isAuthenticated) {
+      await controller.load();
+    }
     final usuario = controller.usuario;
+
     if (usuario?.nome == null || usuario?.nome?.isEmpty == true) {
       return false;
     }

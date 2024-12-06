@@ -6,6 +6,7 @@ import 'package:tennis_santa_rosa/modules/usuario/_view/upsert_usuario/add_usuar
 import 'package:tennis_santa_rosa/modules/usuario/controller/usuario_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_by_login_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
 
 class UsuarioModule extends Module {
@@ -19,6 +20,10 @@ class UsuarioModule extends Module {
       ..add(
         UpdateUsuarioRepository.new,
         key: 'exportedUpdateUsuarioRepository',
+      )
+      ..add(
+        GetUsuarioByLoginRepository.new,
+        key: 'exportedGetUsuarioByLoginRepository',
       );
     super.exportedBinds(i);
   }
@@ -29,6 +34,7 @@ class UsuarioModule extends Module {
       ..add(AddUsuarioRepository.new)
       ..add(FetchUsuariosRepository.new)
       ..add(UpdateUsuarioRepository.new)
+      ..add(GetUsuarioByLoginRepository.new)
 
       // CONTROLLERS
       ..addLazySingleton(() => UsuarioController(i(), i()));
