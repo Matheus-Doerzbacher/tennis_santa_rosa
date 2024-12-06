@@ -21,7 +21,7 @@ class UsuarioModel {
   // ranking
   Situacao situacao;
   int posicaoRankingAtual;
-  int? posicaoRankingAnterior;
+  int posicaoRankingAnterior;
   DateTime? dataUltimoJogo;
   bool? venceuUltimoJogo;
   int jogosNoMes;
@@ -42,7 +42,7 @@ class UsuarioModel {
     // ranking
     this.situacao = Situacao.ativo,
     required this.posicaoRankingAtual,
-    this.posicaoRankingAnterior,
+    required this.posicaoRankingAnterior,
     this.dataUltimoJogo,
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,

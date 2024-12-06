@@ -42,6 +42,8 @@ class _DetalhesIniciaisPageState extends State<DetalhesIniciaisPage> {
           senha: _senha1Controller.text,
           login: controller.usuario?.login ?? '',
           posicaoRankingAtual: controller.usuario?.posicaoRankingAtual ?? 0,
+          posicaoRankingAnterior:
+              controller.usuario?.posicaoRankingAnterior ?? 0,
         );
 
         await controller.updateUsuario(usuario);

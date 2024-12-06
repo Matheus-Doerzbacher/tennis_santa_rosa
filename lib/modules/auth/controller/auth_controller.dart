@@ -34,6 +34,7 @@ class AuthController extends ChangeNotifier {
           login: login,
           senha: senha,
           posicaoRankingAtual: 0,
+          posicaoRankingAnterior: 0,
           nome: 'Admin',
           isAdmin: true,
         );
