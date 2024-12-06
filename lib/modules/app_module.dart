@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/admin/admin_module.dart';
 import 'package:tennis_santa_rosa/modules/auth/auth_module.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/home/home_module.dart';
 import 'package:tennis_santa_rosa/modules/ranking/ranking_module.dart';
 import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
 
@@ -10,6 +11,7 @@ class AppModule extends Module {
   void binds(Injector i) {
     AuthModule().binds(i);
     UsuarioModule().binds(i);
+    RankingModule().binds(i);
   }
 
   @override
@@ -17,8 +19,13 @@ class AppModule extends Module {
     r
       ..module(
         Modular.initialRoute,
-        module: RankingModule(),
+        module: HomeModule(),
         guards: [NameGuard(), AuthGuard()],
+      )
+      ..module(
+        '/ranking',
+        module: RankingModule(),
+        guards: [AuthGuard()],
       )
       ..module(
         '/admin',

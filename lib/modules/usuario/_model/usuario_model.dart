@@ -59,12 +59,12 @@ class UsuarioModel {
   }
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    return UsuarioModel(
+    final usuario = UsuarioModel(
       // informacoes do usuario
       uid: json['uid'],
       nome: json['nome'],
       login: json['login'],
-      senha: json['senha'],
+      senha: '',
       telefone: json['telefone'],
       dataCriacao: DateTime.parse(json['dataCriacao']),
       urlImage: json['urlImage'],
@@ -83,7 +83,9 @@ class UsuarioModel {
       desafiante: json['desafiante'] != null
           ? UsuarioModel.fromJson(json['desafiante'])
           : null,
-    );
+    )..senha = json['senha'];
+
+    return usuario;
   }
 
   Map<String, dynamic> toJson() {

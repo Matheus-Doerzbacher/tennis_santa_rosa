@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
+import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
 class RankingPage extends StatefulWidget {
   const RankingPage({super.key});
@@ -11,14 +12,7 @@ class RankingPage extends StatefulWidget {
 }
 
 class _RankingPageState extends State<RankingPage> {
-  @override
-  void initState() {
-    super.initState();
-    Modular.get<RankingController>().getRanking().then(
-          (_) => {if (mounted) setState(() {})},
-        );
-  }
-
+  // Função para retornar o ícone de posição do ranking
   dynamic positionRanking(int posicaoRankingAtual) {
     if (posicaoRankingAtual == 1) {
       return const Stack(
@@ -70,19 +64,47 @@ class _RankingPageState extends State<RankingPage> {
       );
     } else {
       return Container(
-        margin: const EdgeInsets.only(left: 5),
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Text(
           posicaoRankingAtual.toString(),
           style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
+      );
+    }
+  }
+
+  // funcao que retorna o resultado da posicao do ranking anterior
+  dynamic positionRankingAnterior(UsuarioModel jogador) {
+    final result = jogador.posicaoRankingAnterior - jogador.posicaoRankingAtual;
+    if (result == 0) {
+      return const Icon(
+        Icons.remove,
+      );
+    } else if (result > 0) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(result.toString(), style: const TextStyle(color: Colors.green)),
+          const Icon(Icons.arrow_upward, color: Colors.green),
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            result.toString(),
+            style: const TextStyle(color: Colors.red),
+          ),
+          const Icon(Icons.arrow_downward, color: Colors.red),
+        ],
       );
     }
   }
@@ -99,36 +121,34 @@ class _RankingPageState extends State<RankingPage> {
           await Modular.get<RankingController>().getRanking();
           if (mounted) setState(() {});
         },
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: controller.jogadores.length,
-                itemBuilder: (context, index) {
-                  final jogador = controller.jogadores[index];
-                  return ListTile(
-                    leading: positionRanking(jogador.posicaoRankingAtual),
-                    title: Text(jogador.nome ?? jogador.login),
-                    subtitle: Text('Jogos no mês: ${jogador.jogosNoMes}'),
-                    trailing: Text(jogador.temDesafio ? '✅' : '❌'),
-                  );
-                },
-              ),
-            ),
-            if (Modular.get<AuthController>().usuario?.isAdmin == true)
-              ElevatedButton(
-                onPressed: () => Modular.to.pushNamed('/admin/'),
-                child: const Text('Admin Page'),
-              ),
-            ElevatedButton(
-              onPressed: () {
-                Modular.get<AuthController>().logout();
-                Modular.to.navigate('/auth/login/');
-              },
-              child: const Text('Logout'),
-            ),
-            const SizedBox(height: 50),
-          ],
+        child: ListView.builder(
+          itemCount: (controller.jogadores.length / 3).ceil(),
+          itemBuilder: (context, groupIndex) {
+            final startIndex = groupIndex * 3;
+            final endIndex =
+                (startIndex + 3).clamp(0, controller.jogadores.length);
+            final group = controller.jogadores.sublist(startIndex, endIndex);
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ...group
+                    .map(
+                      (jogador) => SizedBox(
+                        height: 60,
+                        child: ListTile(
+                          leading: positionRanking(jogador.posicaoRankingAtual),
+                          title: Text(jogador.nome ?? jogador.login),
+                          subtitle: Text('Jogos no mês: ${jogador.jogosNoMes}'),
+                          trailing: positionRankingAnterior(jogador),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                const SizedBox(height: 20),
+              ],
+            );
+          },
         ),
       ),
     );
