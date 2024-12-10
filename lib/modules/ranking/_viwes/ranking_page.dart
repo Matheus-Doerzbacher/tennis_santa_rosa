@@ -16,8 +16,8 @@ class _RankingPageState extends State<RankingPage> {
     final controller = context.watch<RankingController>();
 
     // funcao que retorna os dados do desafiante
-    String? nomeDesafiante(String uidDesafiante) {
-      return controller.jogadores
+    String? nomeDesafiante(String uidDesafiante, List<UsuarioModel> jogadores) {
+      return jogadores
           .firstWhere(
             (jogador) => jogador.uid == uidDesafiante,
           )
@@ -94,8 +94,8 @@ class _RankingPageState extends State<RankingPage> {
 
     // funcao que retorna o resultado da posicao do ranking anterior
     dynamic positionRankingAnterior(UsuarioModel jogador) {
-      final result =
-          jogador.posicaoRankingAnterior - jogador.posicaoRankingAtual;
+      final result = (jogador.posicaoRankingAnterior ?? 0) -
+          (jogador.posicaoRankingAtual ?? 0);
       Widget? icon;
       Widget text = const Text('');
 
@@ -130,63 +130,74 @@ class _RankingPageState extends State<RankingPage> {
       appBar: AppBar(
         title: const Text('Ranking'),
       ),
-      body: StreamBuilder<void>(
-        stream: controller.getRanking(),
+      body: StreamBuilder<List<UsuarioModel>>(
+        stream: controller.streamRanking(),
         builder: (context, snapshot) {
-          return ListView.builder(
-            itemCount: (controller.jogadores.length / 3).ceil(),
-            itemBuilder: (context, groupIndex) {
-              final startIndex = groupIndex * 3;
-              final endIndex =
-                  (startIndex + 3).clamp(0, controller.jogadores.length);
-              final group = controller.jogadores.sublist(startIndex, endIndex);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erro: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Nenhum usuário encontrado.'));
+          } else {
+            final jogadores = snapshot.data;
+            return ListView.builder(
+              itemCount: (jogadores!.length / 3).ceil(),
+              itemBuilder: (context, groupIndex) {
+                final startIndex = groupIndex * 3;
+                final endIndex = (startIndex + 3).clamp(0, jogadores.length);
+                final group = jogadores.sublist(startIndex, endIndex);
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...group
-                      .map(
-                        (jogador) => SizedBox(
-                          height: 60,
-                          child: ListTile(
-                            onTap: () => Modular.to.pushNamed(
-                              '/ranking/detail-jogador/',
-                              arguments: jogador,
-                            ),
-                            leading:
-                                positionRanking(jogador.posicaoRankingAtual),
-                            title: Text(jogador.nome ?? jogador.login),
-                            subtitle:
-                                Text('Jogos no mês: ${jogador.jogosNoMes}'),
-                            trailing: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  positionRankingAnterior(jogador),
-                                  if (jogador.temDesafio &&
-                                      jogador.uidDesafiante != null)
-                                    Text(
-                                      // ignore: lines_longer_than_80_chars
-                                      'Desafio: ${nomeDesafiante(jogador.uidDesafiante ?? '')}',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    )
-                                  else
-                                    const SizedBox.shrink(),
-                                ],
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...group
+                        .map(
+                          (jogador) => SizedBox(
+                            height: 60,
+                            child: ListTile(
+                              onTap: () => Modular.to.pushNamed(
+                                '/ranking/detail-jogador/',
+                                arguments: jogador,
+                              ),
+                              leading: positionRanking(
+                                jogador.posicaoRankingAtual ?? 0,
+                              ),
+                              title: Text(jogador.nome ?? jogador.login),
+                              subtitle:
+                                  Text('Jogos no mês: ${jogador.jogosNoMes}'),
+                              trailing: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    positionRankingAnterior(jogador),
+                                    if (jogador.temDesafio &&
+                                        jogador.uidDesafiante != null)
+                                      Text(
+                                        // ignore: lines_longer_than_80_chars
+                                        'Desafio: ${nomeDesafiante(jogador.uidDesafiante ?? '', jogadores)}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      )
+                                    else
+                                      const SizedBox.shrink(),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
-                  const SizedBox(height: 16),
-                  const Divider(),
-                ],
-              );
-            },
-          );
+                        )
+                        .toList(),
+                    const SizedBox(height: 16),
+                    const Divider(),
+                  ],
+                );
+              },
+            );
+          }
         },
       ),
     );

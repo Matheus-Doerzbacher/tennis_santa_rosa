@@ -97,8 +97,6 @@ class _AddUsuarioPageState extends State<AddUsuarioPage> {
                     final usuario = UsuarioModel(
                       login: _loginController.text,
                       senha: _senhaController.text,
-                      posicaoRankingAtual: controller.usuarios.length + 1,
-                      posicaoRankingAnterior: controller.usuarios.length + 1,
                     );
                     final success = await controller.addUsuario(usuario);
 

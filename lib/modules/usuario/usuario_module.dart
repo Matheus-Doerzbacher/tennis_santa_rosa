@@ -7,6 +7,7 @@ import 'package:tennis_santa_rosa/modules/usuario/controller/usuario_controller.
 import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_by_login_repository.dart';
+import 'package:tennis_santa_rosa/modules/usuario/repositories/stream_usuarios_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
 
 class UsuarioModule extends Module {
@@ -14,8 +15,8 @@ class UsuarioModule extends Module {
   void exportedBinds(Injector i) {
     i
       ..add(
-        FetchUsuariosRepository.new,
-        key: 'exportedFetchUsuariosRepository',
+        StreamUsuariosRepository.new,
+        key: 'exportedStreamUsuariosRepository',
       )
       ..add(
         UpdateUsuarioRepository.new,
@@ -32,12 +33,19 @@ class UsuarioModule extends Module {
   void binds(Injector i) {
     i
       ..add(AddUsuarioRepository.new)
-      ..add(FetchUsuariosRepository.new)
+      ..add(StreamUsuariosRepository.new)
       ..add(UpdateUsuarioRepository.new)
       ..add(GetUsuarioByLoginRepository.new)
+      ..add(FetchUsuariosRepository.new)
 
       // CONTROLLERS
-      ..addLazySingleton(() => UsuarioController(i(), i()));
+      ..addLazySingleton(
+        () => UsuarioController(
+          i(),
+          i(),
+          i(),
+        ),
+      );
     super.binds(i);
   }
 

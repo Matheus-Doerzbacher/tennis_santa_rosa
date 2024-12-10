@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 import 'package:tennis_santa_rosa/modules/usuario/controller/usuario_controller.dart';
 
 class ListUsuariosPage extends StatelessWidget {
@@ -29,28 +30,39 @@ class ListUsuariosPage extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: StreamBuilder<void>(
-                  stream: controller.fetchUsuarios(),
+                child: StreamBuilder<List<UsuarioModel>>(
+                  stream: controller.streamUsuarios(),
                   builder: (context, snapshot) {
-                    final usuarios = controller.usuarios;
-                    return ListView.builder(
-                      itemCount: usuarios.length,
-                      itemBuilder: (context, index) {
-                        final usuario = usuarios[index];
-                        return Column(
-                          children: [
-                            ListTile(
-                              title:
-                                  Text(usuario?.nome ?? usuario?.login ?? ''),
-                              subtitle: Text(
-                                usuario?.posicaoRankingAtual.toString() ?? '',
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Erro: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'Nenhum usuário encontrado.',
+                        ),
+                      );
+                    } else {
+                      final usuarios = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: usuarios.length,
+                        itemBuilder: (context, index) {
+                          final usuario = usuarios[index];
+                          return Column(
+                            children: [
+                              ListTile(
+                                title: Text(usuario.nome ?? usuario.login),
+                                subtitle: Text(
+                                  usuario.posicaoRankingAtual.toString(),
+                                ),
                               ),
-                            ),
-                            const Divider(),
-                          ],
-                        );
-                      },
-                    );
+                              const Divider(),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               ),

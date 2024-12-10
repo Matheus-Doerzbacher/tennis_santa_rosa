@@ -20,8 +20,8 @@ class UsuarioModel {
   bool isAdmin;
   // ranking
   Situacao situacao;
-  int posicaoRankingAtual;
-  int posicaoRankingAnterior;
+  int? posicaoRankingAtual;
+  int? posicaoRankingAnterior;
   DateTime? dataUltimoJogo;
   bool? venceuUltimoJogo;
   int jogosNoMes;
@@ -41,8 +41,8 @@ class UsuarioModel {
     this.isAdmin = false,
     // ranking
     this.situacao = Situacao.ativo,
-    required this.posicaoRankingAtual,
-    required this.posicaoRankingAnterior,
+    this.posicaoRankingAtual,
+    this.posicaoRankingAnterior,
     this.dataUltimoJogo,
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,
