@@ -14,7 +14,9 @@ class UsuarioController extends ChangeNotifier {
     this._addUsuarioRepository,
     this._streamUsuariosRepository,
     this._fetchUsuariosRepository,
-  );
+  ) {
+    getUsuarios();
+  }
 
   final List<UsuarioModel?> _usuarios = [];
   bool _isLoading = false;
@@ -23,6 +25,21 @@ class UsuarioController extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Stream<List<UsuarioModel>> streamUsuarios() => _streamUsuariosRepository();
+
+  Future<void> getUsuarios() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final usuarios = await _fetchUsuariosRepository();
+      _usuarios.addAll(usuarios);
+      notifyListeners();
+    } catch (e) {
+      dbPrint(e);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   Future<bool> addUsuario(UsuarioModel usuario) async {
     _isLoading = true;
