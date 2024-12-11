@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_models/desafio.dart';
+import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
@@ -11,6 +13,34 @@ class DetailJogadorRankingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = context.watch<DetailJogadorRankingController>();
+
+    Future<void> onSubmitNovoDesafio() async {
+      final novoDesafio = DesafioModel(
+        idUsuarioDesafiante: Modular.get<AuthController>().usuario!.uid!,
+        idUsuarioDesafiado: usuario.uid!,
+        data: DateTime.now(),
+      );
+
+      final response = await controller.novoDesafio(novoDesafio);
+      if (response && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Desafio realizado com sucesso'),
+          ),
+        );
+        Modular.to.pop();
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Jogador já possui um desafio',
+            ),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -74,12 +104,15 @@ class DetailJogadorRankingPage extends StatelessWidget {
           const SizedBox(height: 16),
           FilledButton.icon(
             onPressed: Modular.get<RankingController>().podeDesafiar(
-              Modular.get<AuthController>().usuario!,
-              usuario,
-            )
-                ? () {}
+                      Modular.get<AuthController>().usuario!,
+                      usuario,
+                    ) ||
+                    controller.isLoading
+                ? onSubmitNovoDesafio
                 : null,
-            icon: const Icon(Icons.stars),
+            icon: controller.isLoading
+                ? const CircularProgressIndicator()
+                : const Icon(Icons.stars),
             label: const Text('Desafiar pelo ranking'),
           ),
         ],

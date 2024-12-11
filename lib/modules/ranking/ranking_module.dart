@@ -2,7 +2,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/detail_jogador_ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
+import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
+import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
 
 class RankingModule extends Module {
@@ -11,7 +13,12 @@ class RankingModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.addLazySingleton<RankingController>(() => RankingController(i()));
+    i
+      ..add(NovoDesafioRepository.new)
+
+      // CONTROLLERS
+      ..addLazySingleton(() => RankingController(i()))
+      ..addLazySingleton(() => DetailJogadorRankingController(i(), i(), i()));
   }
 
   @override
@@ -26,8 +33,11 @@ class RankingModule extends Module {
       )
       ..child(
         '/detail-jogador/:uid',
-        child: (context) => DetailJogadorRankingPage(
-          usuario: Modular.args.data,
+        child: (context) => ChangeNotifierProvider(
+          create: (context) => Modular.get<DetailJogadorRankingController>(),
+          child: DetailJogadorRankingPage(
+            usuario: Modular.args.data,
+          ),
         ),
       );
   }
