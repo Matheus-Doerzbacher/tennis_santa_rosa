@@ -31,10 +31,7 @@ class DetailJogadorRankingController extends ChangeNotifier {
 
       if (usuario != null && usuarioDesafiado != null) {
         // USUARIO DESAFIANTE
-        if (usuario.temDesafio ||
-            usuario.uidDesafiante?.isNotEmpty == true ||
-            usuarioDesafiado.temDesafio ||
-            usuarioDesafiado.uidDesafiante?.isNotEmpty == true) {
+        if (usuario.temDesafio || usuarioDesafiado.temDesafio) {
           return false;
         }
 
@@ -45,14 +42,12 @@ class DetailJogadorRankingController extends ChangeNotifier {
         }
 
         usuario = usuario.copyWith(
-          temDesafio: true,
           uidDesafiante: desafio.idUsuarioDesafiado,
         );
         await _updateUsuarioRepository(usuario);
 
         // USUARIO DESAFIADO
         usuarioDesafiado = usuarioDesafiado.copyWith(
-          temDesafio: true,
           uidDesafiante: desafio.idUsuarioDesafiante,
         );
         await _updateUsuarioRepository(usuarioDesafiado);

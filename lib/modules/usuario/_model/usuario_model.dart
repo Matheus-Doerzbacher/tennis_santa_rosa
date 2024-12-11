@@ -26,7 +26,6 @@ class UsuarioModel {
   bool? venceuUltimoJogo;
   int jogosNoMes;
   // desafio
-  bool temDesafio;
   String? uidDesafiante;
 
   UsuarioModel({
@@ -47,7 +46,6 @@ class UsuarioModel {
     this.venceuUltimoJogo,
     this.jogosNoMes = 0,
     // desafio
-    this.temDesafio = false,
     this.uidDesafiante,
   })  : dataCriacao = dataCriacao ?? DateTime.now(),
         senha = encryptPassword(senha);
@@ -57,6 +55,8 @@ class UsuarioModel {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
+
+  bool get temDesafio => uidDesafiante?.isNotEmpty == true;
 
   factory UsuarioModel.fromJson(Map<String, dynamic> json) {
     final usuario = UsuarioModel(
@@ -79,7 +79,6 @@ class UsuarioModel {
       venceuUltimoJogo: json['venceuUltimoJogo'],
       jogosNoMes: json['jogosNoMes'],
       // desafio
-      temDesafio: json['temDesafio'],
       uidDesafiante: json['uidDesafiante'],
     )..senha = json['senha'];
 
@@ -97,7 +96,6 @@ class UsuarioModel {
       'dataCriacao': dataCriacao.toIso8601String(),
       'posicaoRankingAtual': posicaoRankingAtual,
       'posicaoRankingAnterior': posicaoRankingAnterior,
-      'temDesafio': temDesafio,
       'dataUltimoJogo': dataUltimoJogo?.toIso8601String(),
       'venceuUltimoJogo': venceuUltimoJogo,
       'jogosNoMes': jogosNoMes,
@@ -117,7 +115,6 @@ class UsuarioModel {
     DateTime? dataCriacao,
     int? posicaoRankingAtual,
     int? posicaoRankingAnterior,
-    bool? temDesafio,
     DateTime? dataUltimoJogo,
     bool? venceuUltimoJogo,
     int? jogosNoMes,
@@ -136,7 +133,6 @@ class UsuarioModel {
       posicaoRankingAtual: posicaoRankingAtual ?? this.posicaoRankingAtual,
       posicaoRankingAnterior:
           posicaoRankingAnterior ?? this.posicaoRankingAnterior,
-      temDesafio: temDesafio ?? this.temDesafio,
       dataUltimoJogo: dataUltimoJogo ?? this.dataUltimoJogo,
       venceuUltimoJogo: venceuUltimoJogo ?? this.venceuUltimoJogo,
       jogosNoMes: jogosNoMes ?? this.jogosNoMes,
