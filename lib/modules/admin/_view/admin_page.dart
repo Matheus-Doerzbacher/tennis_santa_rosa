@@ -19,7 +19,7 @@ class AdminPage extends StatelessWidget {
             Text(controller.usuario?.login ?? ''),
             ElevatedButton(
               onPressed: () {
-                Modular.to.pushNamed('/usuario/list-usuarios');
+                Modular.to.pushNamed('/admin/list-usuarios');
               },
               child: const Text('Jogadores'),
             ),

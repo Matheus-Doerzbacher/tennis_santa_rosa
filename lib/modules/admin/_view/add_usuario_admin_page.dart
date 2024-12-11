@@ -2,18 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/usuario/controller/usuario_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AddUsuarioPage extends StatefulWidget {
-  const AddUsuarioPage({super.key});
+class AddUsuarioAdminPage extends StatefulWidget {
+  const AddUsuarioAdminPage({super.key});
 
   @override
-  State<AddUsuarioPage> createState() => _AddUsuarioPageState();
+  State<AddUsuarioAdminPage> createState() => _AddUsuarioAdminPageState();
 }
 
-class _AddUsuarioPageState extends State<AddUsuarioPage> {
+class _AddUsuarioAdminPageState extends State<AddUsuarioAdminPage> {
   final _formKey = GlobalKey<FormState>();
   final _loginController = TextEditingController();
   final _senhaController = TextEditingController();
@@ -36,7 +36,7 @@ class _AddUsuarioPageState extends State<AddUsuarioPage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = context.watch<UsuarioController>();
+    final controller = Modular.get<AdminController>();
 
     return Scaffold(
       appBar: AppBar(
