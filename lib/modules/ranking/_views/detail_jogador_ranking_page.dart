@@ -58,12 +58,17 @@ class DetailJogadorRankingPage extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
+                  backgroundImage: usuario.urlImage != null
+                      ? NetworkImage(usuario.urlImage!)
+                      : null,
                   radius: 40,
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  child: usuario.urlImage == null
+                      ? Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Theme.of(context).colorScheme.primary,
+                        )
+                      : null,
                 ),
                 const SizedBox(width: 16),
                 Text(
