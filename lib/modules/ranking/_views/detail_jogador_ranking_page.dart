@@ -2,23 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_views/_components/card_desafio_component.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
-class DetailJogadorRankingPage extends StatelessWidget {
+class DetailJogadorRankingPage extends StatefulWidget {
   final UsuarioModel usuario;
 
   const DetailJogadorRankingPage({super.key, required this.usuario});
 
   @override
+  State<DetailJogadorRankingPage> createState() =>
+      _DetailJogadorRankingPageState();
+}
+
+class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
+  DesafioModel? desafioPendente;
+  @override
+  void initState() {
+    final controller = Modular.get<DetailJogadorRankingController>();
+    controller.getUsuarios().then((_) {
+      controller.getDesafios(widget.usuario.uid!).then((_) {
+        if (mounted) {
+          setState(
+            () => desafioPendente = controller.desafios
+                .where(
+                  (d) => d.status == StatusDesafio.pendente,
+                )
+                .firstOrNull,
+          );
+        }
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final controller = context.watch<DetailJogadorRankingController>();
+
+    UsuarioModel getUsuario(String uid) {
+      return controller.usuarios.firstWhere((element) => element.uid == uid);
+    }
 
     Future<void> onSubmitNovoDesafio() async {
       final novoDesafio = DesafioModel(
         idUsuarioDesafiante: Modular.get<AuthController>().usuario!.uid!,
-        idUsuarioDesafiado: usuario.uid!,
+        idUsuarioDesafiado: widget.usuario.uid!,
         data: DateTime.now(),
       );
 
@@ -58,11 +89,11 @@ class DetailJogadorRankingPage extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: usuario.urlImage != null
-                      ? NetworkImage(usuario.urlImage!)
+                  backgroundImage: widget.usuario.urlImage != null
+                      ? NetworkImage(widget.usuario.urlImage!)
                       : null,
                   radius: 40,
-                  child: usuario.urlImage == null
+                  child: widget.usuario.urlImage == null
                       ? Icon(
                           Icons.person,
                           size: 40,
@@ -72,7 +103,7 @@ class DetailJogadorRankingPage extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  usuario.nome ?? usuario.login,
+                  widget.usuario.nome ?? widget.usuario.login,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -91,13 +122,13 @@ class DetailJogadorRankingPage extends StatelessWidget {
                   children: [
                     _buildStatCard(
                       'Pos. Ranking',
-                      usuario.posicaoRankingAtual ?? 0,
+                      widget.usuario.posicaoRankingAtual ?? 0,
                       Icons.emoji_events,
                       context,
                     ),
                     _buildStatCard(
                       'Jogos no mes',
-                      usuario.jogosNoMes,
+                      widget.usuario.jogosNoMes,
                       Icons.sports_tennis,
                       context,
                     ),
@@ -107,19 +138,26 @@ class DetailJogadorRankingPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          FilledButton.icon(
-            onPressed: Modular.get<RankingController>().podeDesafiar(
-                      Modular.get<AuthController>().usuario!,
-                      usuario,
-                    ) ||
-                    controller.isLoading
-                ? onSubmitNovoDesafio
-                : null,
-            icon: controller.isLoading
-                ? const CircularProgressIndicator()
-                : const Icon(Icons.stars),
-            label: const Text('Desafiar pelo ranking'),
-          ),
+          if (widget.usuario.uid != Modular.get<AuthController>().usuario!.uid)
+            FilledButton.icon(
+              onPressed: Modular.get<RankingController>().podeDesafiar(
+                        Modular.get<AuthController>().usuario!,
+                        widget.usuario,
+                      ) ||
+                      controller.isLoading
+                  ? onSubmitNovoDesafio
+                  : null,
+              icon: controller.isLoading
+                  ? const CircularProgressIndicator()
+                  : const Icon(Icons.stars),
+              label: const Text('Desafiar pelo ranking'),
+            ),
+          if (desafioPendente != null)
+            CardDesafioComponent(
+              desafio: desafioPendente!,
+              desafiante: getUsuario(desafioPendente!.idUsuarioDesafiante),
+              desafiado: getUsuario(desafioPendente!.idUsuarioDesafiado),
+            ),
         ],
       ),
     );

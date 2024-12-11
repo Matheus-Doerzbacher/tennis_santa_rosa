@@ -5,7 +5,8 @@ import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/desafios_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
-import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_repository%20copy.dart';
+import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_by_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_repository%20copy%202.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/stram_desafios_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
@@ -20,10 +21,19 @@ class RankingModule extends Module {
       ..add(NovoDesafioRepository.new)
       ..add(FetchDesafiosRepository.new)
       ..add(StreamDesafiosRepository.new)
+      ..add(FetchDesafiosByUsuarioRepository.new)
 
       // CONTROLLERS
       ..addLazySingleton(() => RankingController(i()))
-      ..addLazySingleton(() => DetailJogadorRankingController(i(), i(), i()))
+      ..addLazySingleton(
+        () => DetailJogadorRankingController(
+          i(),
+          i(),
+          i(),
+          i(),
+          i(),
+        ),
+      )
       ..addLazySingleton(() => DesafiosController(i(), i()));
   }
 
