@@ -10,6 +10,7 @@ class DesafioModel {
   final String idUsuarioDesafiante;
   final String idUsuarioDesafiado;
   final DateTime data;
+  final DateTime? dataJogo;
   final StatusDesafio status;
   final int? game1Desafiante;
   final int? game1Desafiado;
@@ -25,6 +26,7 @@ class DesafioModel {
     required this.idUsuarioDesafiante,
     required this.idUsuarioDesafiado,
     required this.data,
+    this.dataJogo,
     this.status = StatusDesafio.pendente,
     this.game1Desafiante,
     this.game1Desafiado,
@@ -42,6 +44,8 @@ class DesafioModel {
       idUsuarioDesafiante: json['idUsuarioDesafiante'],
       idUsuarioDesafiado: json['idUsuarioDesafiado'],
       data: DateTime.parse(json['data']),
+      dataJogo:
+          json['dataJogo'] != null ? DateTime.parse(json['dataJogo']) : null,
       status: StatusDesafio.values[json['status']],
       game1Desafiante: json['game1Desafiante'],
       game1Desafiado: json['game1Desafiado'],
@@ -60,6 +64,7 @@ class DesafioModel {
       'idUsuarioDesafiante': idUsuarioDesafiante,
       'idUsuarioDesafiado': idUsuarioDesafiado,
       'data': data.toIso8601String(),
+      'dataJogo': dataJogo?.toIso8601String(),
       'status': status.index,
       'game1Desafiante': game1Desafiante,
       'game1Desafiado': game1Desafiado,
@@ -77,6 +82,7 @@ class DesafioModel {
     String? idUsuarioDesafiante,
     String? idUsuarioDesafiado,
     DateTime? data,
+    DateTime? dataJogo,
     StatusDesafio? status,
     int? game1Desafiante,
     int? game1Desafiado,
@@ -92,6 +98,7 @@ class DesafioModel {
       idUsuarioDesafiante: idUsuarioDesafiante ?? this.idUsuarioDesafiante,
       idUsuarioDesafiado: idUsuarioDesafiado ?? this.idUsuarioDesafiado,
       data: data ?? this.data,
+      dataJogo: dataJogo ?? this.dataJogo,
       status: status ?? this.status,
       game1Desafiante: game1Desafiante ?? this.game1Desafiante,
       game1Desafiado: game1Desafiado ?? this.game1Desafiado,

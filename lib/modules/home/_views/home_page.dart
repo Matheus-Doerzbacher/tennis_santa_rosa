@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/admin_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_views/desafios_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_view/detail_usuario_page.dart';
 
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         const RankingPage(),
 
         /// Desafios page
-        const Scaffold(),
+        const DesafiosPage(),
 
         /// Profile page
         const DetailUsuarioPage(),

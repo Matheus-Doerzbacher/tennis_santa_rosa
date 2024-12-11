@@ -30,7 +30,12 @@ class UsuarioModule extends Module {
       ..add(
         GetUsuarioByIdRepository.new,
         key: 'exportedGetUsuarioByIdRepository',
+      )
+      ..add(
+        FetchUsuariosRepository.new,
+        key: 'exportedFetchUsuariosRepository',
       );
+
     super.exportedBinds(i);
   }
 

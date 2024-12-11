@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/ranking/_models/desafio.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';

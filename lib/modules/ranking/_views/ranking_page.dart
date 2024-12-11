@@ -4,14 +4,9 @@ import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
-class RankingPage extends StatefulWidget {
+class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
 
-  @override
-  State<RankingPage> createState() => _RankingPageState();
-}
-
-class _RankingPageState extends State<RankingPage> {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<RankingController>();

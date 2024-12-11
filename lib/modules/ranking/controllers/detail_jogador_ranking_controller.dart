@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
-import 'package:tennis_santa_rosa/modules/ranking/_models/desafio.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_by_uid_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
