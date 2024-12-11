@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
@@ -141,11 +142,14 @@ class _RankingPageState extends State<RankingPage> {
             return const Center(child: Text('Nenhum usuário encontrado.'));
           } else {
             final jogadores = snapshot.data;
+            final groupCount =
+                (jogadores!.length / Env.jogadoresPorGrupo).ceil();
             return ListView.builder(
-              itemCount: (jogadores!.length / 3).ceil(),
+              itemCount: groupCount,
               itemBuilder: (context, groupIndex) {
-                final startIndex = groupIndex * 3;
-                final endIndex = (startIndex + 3).clamp(0, jogadores.length);
+                final startIndex = groupIndex * Env.jogadoresPorGrupo;
+                final endIndex = (startIndex + Env.jogadoresPorGrupo)
+                    .clamp(0, jogadores.length);
                 final group = jogadores.sublist(startIndex, endIndex);
 
                 return Column(
@@ -192,7 +196,7 @@ class _RankingPageState extends State<RankingPage> {
                         )
                         .toList(),
                     const SizedBox(height: 16),
-                    const Divider(),
+                    if (groupIndex < groupCount - 1) const Divider(),
                   ],
                 );
               },

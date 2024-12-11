@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/admin_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/ranking/_viwes/ranking_page.dart';
+import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_view/detail_usuario_page.dart';
 
 class HomePage extends StatefulWidget {
