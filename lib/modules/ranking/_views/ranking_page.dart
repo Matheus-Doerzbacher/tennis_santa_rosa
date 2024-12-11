@@ -167,9 +167,13 @@ class _RankingPageState extends State<RankingPage> {
                               leading: positionRanking(
                                 jogador.posicaoRankingAtual ?? 0,
                               ),
-                              title: Text(jogador.nome ?? jogador.login),
-                              subtitle:
-                                  Text('Jogos no mês: ${jogador.jogosNoMes}'),
+                              title: Text(
+                                jogador.nome ?? jogador.login,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              subtitle: Text(
+                                'Jogos no mês: ${jogador.jogosNoMes}',
+                              ),
                               trailing: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8),
@@ -181,10 +185,10 @@ class _RankingPageState extends State<RankingPage> {
                                         jogador.uidDesafiante != null)
                                       Text(
                                         // ignore: lines_longer_than_80_chars
-                                        'Desafio: ${nomeDesafiante(jogador.uidDesafiante ?? '', jogadores)}',
+                                        'D: ${nomeDesafiante(jogador.uidDesafiante ?? '', jogadores)}',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodySmall,
+                                            .titleSmall,
                                       )
                                     else
                                       const SizedBox.shrink(),
