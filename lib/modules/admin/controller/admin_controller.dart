@@ -7,18 +7,21 @@ import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repos
 import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/salvar_imagem_jogador_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/stream_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
 
 class AdminController extends ChangeNotifier {
   final StreamUsuariosRepository _streamUsuariosRepository;
   final FetchUsuariosRepository _fetchUsuariosRepository;
   final AddUsuarioRepository _addUsuarioRepository;
   final SalvarImagemJogadorRepository _salvarImageJogadorRepository;
+  final UpdateUsuarioRepository _updateUsuarioRepository;
 
   AdminController(
     this._streamUsuariosRepository,
     this._fetchUsuariosRepository,
     this._addUsuarioRepository,
     this._salvarImageJogadorRepository,
+    this._updateUsuarioRepository,
   );
 
   List<UsuarioModel?> _usuarios = [];
@@ -68,7 +71,33 @@ class AdminController extends ChangeNotifier {
     }
   }
 
-  Future<String> salvarImageJogador(File imagem) async {
-    return _salvarImageJogadorRepository(imagem);
+  Future<bool> updateUsuario(UsuarioModel usuario) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final success = await _updateUsuarioRepository(usuario);
+      return success;
+    } catch (e) {
+      dbPrint(e);
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<String> salvarImageJogador(File imagem, String uid) async {
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final url = await _salvarImageJogadorRepository(imagem, uid);
+      return url;
+    } catch (e) {
+      dbPrint(e);
+      return '';
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

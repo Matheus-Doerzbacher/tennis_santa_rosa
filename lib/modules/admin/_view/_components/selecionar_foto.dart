@@ -44,22 +44,24 @@ class _SelecionarFotoWidgetState extends State<SelecionarFotoWidget> {
       children: [
         Container(
           height: 120,
-          width: 80,
+          width: 120,
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(8),
-            image: widget.urlImage != null || _image != null
+            image: widget.urlImage?.isNotEmpty == true || _image != null
                 ? DecorationImage(
-                    image: widget.urlImage != null
+                    image: widget.urlImage?.isNotEmpty == true
                         ? NetworkImage(widget.urlImage!)
-                        : FileImage(_image!),
+                        : FileImage(_image!) as ImageProvider,
                     fit: BoxFit.cover,
                   )
                 : null,
           ),
-          child: _image == null && widget.urlImage == null
+          child: _image == null &&
+                  (widget.urlImage == null ||
+                      widget.urlImage?.isNotEmpty == false)
               ? Icon(
-                  Icons.menu_book,
+                  Icons.person,
                   color: colorScheme.primary,
                   size: 60,
                 )

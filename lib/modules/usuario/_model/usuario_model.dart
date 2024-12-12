@@ -126,7 +126,7 @@ class UsuarioModel {
       uid: uid ?? this.uid,
       nome: nome ?? this.nome,
       login: login ?? this.login,
-      senha: senha != null ? encryptPassword(senha) : this.senha,
+      senha: senha ?? this.senha,
       telefone: telefone ?? this.telefone,
       situacao: situacao ?? this.situacao,
       dataCriacao: dataCriacao ?? this.dataCriacao,
