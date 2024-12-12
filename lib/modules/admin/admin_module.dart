@@ -12,7 +12,7 @@ class AdminModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.addLazySingleton(() => AdminController(i(), i(), i()));
+    i.addLazySingleton(() => AdminController(i(), i(), i(), i()));
   }
 
   @override
