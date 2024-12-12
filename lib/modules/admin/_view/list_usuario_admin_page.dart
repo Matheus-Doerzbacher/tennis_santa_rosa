@@ -53,8 +53,14 @@ class ListUsuarioAdminPage extends StatelessWidget {
                             children: [
                               ListTile(
                                 title: Text(usuario.nome ?? usuario.login),
-                                subtitle: Text(
-                                  usuario.posicaoRankingAtual.toString(),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    Modular.to.pushNamed(
+                                      '/admin/update-usuario',
+                                      arguments: usuario,
+                                    );
+                                  },
+                                  icon: const Icon(Icons.edit),
                                 ),
                               ),
                               const Divider(),

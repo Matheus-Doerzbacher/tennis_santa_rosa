@@ -1,6 +1,4 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:provider/provider.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_view/list_usuarios_page.dart';
 import 'package:tennis_santa_rosa/modules/usuario/controller/usuario_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
@@ -52,16 +50,5 @@ class UsuarioModule extends Module {
         () => UsuarioController(i()),
       );
     super.binds(i);
-  }
-
-  @override
-  void routes(RouteManager r) {
-    r.child(
-      '/list-usuarios/',
-      child: (context) => ChangeNotifierProvider(
-        create: (context) => Modular.get<UsuarioController>(),
-        child: const ListUsuariosPage(),
-      ),
-    );
   }
 }
