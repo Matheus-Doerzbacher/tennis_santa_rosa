@@ -4,7 +4,7 @@ enum Situacao {
   ativo,
 }
 
-class UsuarioModel {
+class JogadorModel {
   // informacoes do usuario
   String? uid;
   String? nome;
@@ -25,7 +25,7 @@ class UsuarioModel {
   String? uidDesafiante;
   String? uidUltimoDesafio;
 
-  UsuarioModel({
+  JogadorModel({
     // informacoes do usuario
     this.uid,
     this.nome,
@@ -49,8 +49,8 @@ class UsuarioModel {
 
   bool get temDesafio => uidDesafiante?.isNotEmpty == true;
 
-  factory UsuarioModel.fromJson(Map<String, dynamic> json) {
-    final usuario = UsuarioModel(
+  factory JogadorModel.fromJson(Map<String, dynamic> json) {
+    final usuario = JogadorModel(
       // informacoes do usuario
       uid: json['uid'],
       nome: json['nome'],
@@ -98,7 +98,7 @@ class UsuarioModel {
     };
   }
 
-  UsuarioModel copyWith({
+  JogadorModel copyWith({
     String? uid,
     String? nome,
     String? login,
@@ -117,7 +117,7 @@ class UsuarioModel {
     String? uidUltimoDesafio,
     DateTime? dataUltimoDesafio,
   }) {
-    return UsuarioModel(
+    return JogadorModel(
       uid: uid ?? this.uid,
       nome: nome ?? this.nome,
       login: login ?? this.login,

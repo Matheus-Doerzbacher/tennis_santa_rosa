@@ -11,7 +11,7 @@ class AuthModule extends Module {
 
   @override
   void binds(Injector i) {
-    i.addLazySingleton(() => AuthController(i(), i()));
+    i.addLazySingleton(() => AuthController(i()));
   }
 
   @override

@@ -5,19 +5,19 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/_components/selecionar_foto.dart';
-import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 
-class UpdateUsuarioAdminPage extends StatefulWidget {
-  final UsuarioModel usuario;
-  const UpdateUsuarioAdminPage({super.key, required this.usuario});
+class UpdateJogadorAdminPage extends StatefulWidget {
+  final JogadorModel jogador;
+  const UpdateJogadorAdminPage({super.key, required this.jogador});
 
   @override
-  State<UpdateUsuarioAdminPage> createState() => _UpdateUsuarioAdminPageState();
+  State<UpdateJogadorAdminPage> createState() => _UpdateJogadorAdminPageState();
 }
 
-class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
-  final controller = Modular.get<AdminController>();
+class _UpdateJogadorAdminPageState extends State<UpdateJogadorAdminPage> {
+  final controller = Modular.get<JogadorController>();
 
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
@@ -30,9 +30,9 @@ class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
   @override
   void initState() {
     super.initState();
-    _nomeController.text = widget.usuario.nome ?? '';
-    _telefoneController.text = widget.usuario.telefone ?? '';
-    _urlImage = widget.usuario.urlImage;
+    _nomeController.text = widget.jogador.nome ?? '';
+    _telefoneController.text = widget.jogador.telefone ?? '';
+    _urlImage = widget.jogador.urlImage;
   }
 
   @override
@@ -59,7 +59,7 @@ class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
       if (_imageSelected != null) {
         imageUrl = await controller.salvarImageJogador(
           _imageSelected!,
-          widget.usuario.uid!,
+          widget.jogador.uid!,
         );
 
         if (imageUrl.isEmpty) {
@@ -69,16 +69,16 @@ class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
         imageUrl = _urlImage ?? '';
       }
 
-      final usuarioAtualizado = widget.usuario.copyWith(
+      final jogadorAtualizado = widget.jogador.copyWith(
         nome: _nomeController.text,
         telefone: _telefoneController.text,
         urlImage: imageUrl,
         senha: _senhaController.text.isNotEmpty
             ? encryptPassword(_senhaController.text)
-            : widget.usuario.senha,
+            : widget.jogador.senha,
       );
 
-      await controller.updateUsuario(usuarioAtualizado);
+      await controller.updateJogador(jogadorAtualizado);
       Modular.to.pop();
     } catch (error) {
       dbPrint(error);
@@ -87,10 +87,10 @@ class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    final watch = context.watch<AdminController>();
+    final watch = context.watch<JogadorController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Atualizar Usuário'),
+        title: const Text('Atualizar Jogador'),
       ),
       body: Container(
         padding: const EdgeInsets.all(24),

@@ -52,7 +52,7 @@ class RankingModule extends Module {
         child: (context) => ChangeNotifierProvider(
           create: (context) => Modular.get<DetailJogadorRankingController>(),
           child: DetailJogadorRankingPage(
-            usuario: Modular.args.data,
+            uidUsuario: Modular.args.data,
           ),
         ),
       );

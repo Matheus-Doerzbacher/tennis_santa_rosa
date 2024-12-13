@@ -2,20 +2,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:provider/provider.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/add_usuario_admin_page.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/admin_page.dart';
-import 'package:tennis_santa_rosa/modules/admin/_view/list_usuario_admin_page.dart';
-import 'package:tennis_santa_rosa/modules/admin/_view/update_usuario_admin_page.dart';
-import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/jogador_module.dart';
+import 'package:tennis_santa_rosa/modules/admin/_view/list_jogadores_admin_page.dart';
+import 'package:tennis_santa_rosa/modules/admin/_view/update_jogador_admin_page.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 
 class AdminModule extends Module {
-  @override
-  List<Module> get imports => [UsuarioModule()];
-
-  @override
-  void binds(Injector i) {
-    i.addLazySingleton(() => AdminController(i(), i(), i(), i(), i()));
-  }
-
   @override
   void routes(RouteManager r) {
     r
@@ -25,7 +16,7 @@ class AdminModule extends Module {
       )
       ..child(
         '/list-usuarios',
-        child: (context) => const ListUsuarioAdminPage(),
+        child: (context) => const ListJogadoresAdminPage(),
       )
       ..child(
         '/add-usuario',
@@ -34,9 +25,9 @@ class AdminModule extends Module {
       ..child(
         '/update-usuario',
         child: (context) => ChangeNotifierProvider(
-          create: (context) => Modular.get<AdminController>(),
-          child: UpdateUsuarioAdminPage(
-            usuario: Modular.args.data,
+          create: (context) => Modular.get<JogadorController>(),
+          child: UpdateJogadorAdminPage(
+            jogador: Modular.args.data,
           ),
         ),
       );

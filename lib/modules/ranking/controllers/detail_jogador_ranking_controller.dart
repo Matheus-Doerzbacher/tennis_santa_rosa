@@ -1,43 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
-import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_uid_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_jogador_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_jogador_by_uid_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/update_jogador_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_by_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
 
 class DetailJogadorRankingController extends ChangeNotifier {
   final NovoDesafioRepository _novoDesafioRepository;
-  final GetUsuarioByIdRepository _getUsuarioByIdRepository;
-  final UpdateUsuarioRepository _updateUsuarioRepository;
-  final FetchUsuariosRepository _fetchUsuariosRepository;
+  final GetJogadorByUidRepository _getJogadorByUidRepository;
+  final UpdateJogadorRepository _updateJogadorRepository;
+  final FetchJogadoresRepository _fetchJogadoresRepository;
   final FetchDesafiosByUsuarioRepository _fetchDesafiosByUsuarioRepository;
 
   DetailJogadorRankingController(
     this._novoDesafioRepository,
-    this._updateUsuarioRepository,
-    this._getUsuarioByIdRepository,
-    this._fetchUsuariosRepository,
+    this._updateJogadorRepository,
+    this._getJogadorByUidRepository,
+    this._fetchJogadoresRepository,
     this._fetchDesafiosByUsuarioRepository,
   ) {
-    getUsuarios();
-    getUsuarioLogado();
+    getJogadores();
   }
 
-  List<UsuarioModel> _usuarios = [];
+  List<JogadorModel> _jogadores = [];
   List<DesafioModel> _desafios = [];
-  UsuarioModel? _usuarioLogado;
   bool _isLoading = false;
   bool _isLoadingButton = false;
 
-  List<UsuarioModel> get usuarios => _usuarios;
+  List<JogadorModel> get jogadores => _jogadores;
   List<DesafioModel> get desafios => _desafios;
-  UsuarioModel? get usuarioLogado => _usuarioLogado;
   bool get isLoading => _isLoading;
   bool get isLoadingButton => _isLoadingButton;
 
@@ -47,9 +42,9 @@ class DetailJogadorRankingController extends ChangeNotifier {
       notifyListeners();
 
       var usuario =
-          await _getUsuarioByIdRepository(desafio.idUsuarioDesafiante);
+          await _getJogadorByUidRepository(desafio.idUsuarioDesafiante);
       var usuarioDesafiado =
-          await _getUsuarioByIdRepository(desafio.idUsuarioDesafiado);
+          await _getJogadorByUidRepository(desafio.idUsuarioDesafiado);
 
       if (usuario != null && usuarioDesafiado != null) {
         // USUARIO DESAFIANTE
@@ -66,13 +61,13 @@ class DetailJogadorRankingController extends ChangeNotifier {
         usuario = usuario.copyWith(
           uidDesafiante: desafio.idUsuarioDesafiado,
         );
-        await _updateUsuarioRepository(usuario);
+        await _updateJogadorRepository(usuario);
 
         // USUARIO DESAFIADO
         usuarioDesafiado = usuarioDesafiado.copyWith(
           uidDesafiante: desafio.idUsuarioDesafiante,
         );
-        await _updateUsuarioRepository(usuarioDesafiado);
+        await _updateJogadorRepository(usuarioDesafiado);
 
         return true;
       }
@@ -87,12 +82,12 @@ class DetailJogadorRankingController extends ChangeNotifier {
     }
   }
 
-  Future<void> getUsuarios() async {
+  Future<void> getJogadores() async {
     try {
       _isLoading = true;
       notifyListeners();
 
-      _usuarios = await _fetchUsuariosRepository();
+      _jogadores = await _fetchJogadoresRepository();
       notifyListeners();
     } catch (e) {
       dbPrint('Erro ao buscar usuário: $e');
@@ -119,23 +114,21 @@ class DetailJogadorRankingController extends ChangeNotifier {
     }
   }
 
-  Future<void> getUsuarioLogado() async {
+  Future<JogadorModel?> getJogador(String uid) async {
     try {
       _isLoading = true;
       notifyListeners();
-      final uid = Modular.get<AuthController>().usuario!.uid!;
-      _usuarioLogado = await _getUsuarioByIdRepository(uid);
-      notifyListeners();
+      return await _getJogadorByUidRepository(uid);
     } catch (e) {
-      dbPrint('Erro ao buscar usuário logado: $e');
-      throw Exception('Erro ao buscar usuário logado: $e');
+      dbPrint('Erro ao buscar Jogador: $e');
+      throw Exception('Erro ao buscar Jogador: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
     }
   }
 
-  bool podeDesafiar(UsuarioModel usuario, UsuarioModel usuarioDesafiado) {
+  bool podeDesafiar(JogadorModel usuario, JogadorModel usuarioDesafiado) {
     // Verifica se o jogador é o mesmo do desafiado
     if (usuario.uid == usuarioDesafiado.uid) {
       return false;
@@ -161,6 +154,11 @@ class DetailJogadorRankingController extends ChangeNotifier {
 
     // Verifica se o jogador esta apto para desafiar
     if (usuario.situacao != Situacao.ativo) {
+      return false;
+    }
+
+    // Verifica se o desafiado esta apto para receber um desafio
+    if (usuarioDesafiado.situacao != Situacao.ativo) {
       return false;
     }
 

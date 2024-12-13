@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 
-class ListUsuarioAdminPage extends StatelessWidget {
-  const ListUsuarioAdminPage({super.key});
+class ListJogadoresAdminPage extends StatelessWidget {
+  const ListJogadoresAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Modular.get<AdminController>();
+    final controller = Modular.get<JogadorController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -30,8 +30,8 @@ class ListUsuarioAdminPage extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: StreamBuilder<List<UsuarioModel>>(
-                  stream: controller.streamUsuarios(),
+                child: StreamBuilder<List<JogadorModel>>(
+                  stream: controller.streamJogadores(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());

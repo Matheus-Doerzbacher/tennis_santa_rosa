@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/admin_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/desafios_page.dart';
@@ -43,12 +44,13 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.sports_tennis),
             label: 'Desafios',
           ),
-          NavigationDestination(
-            selectedIcon:
-                Icon(Icons.person_outline, color: colorScheme.onPrimary),
-            icon: const Icon(Icons.person_outline),
-            label: 'Perfil',
-          ),
+          if (Modular.get<AuthController>().usuario?.login != Env.userLogin)
+            NavigationDestination(
+              selectedIcon:
+                  Icon(Icons.person_outline, color: colorScheme.onPrimary),
+              icon: const Icon(Icons.person_outline),
+              label: 'Perfil',
+            ),
           if (Modular.get<AuthController>().usuario?.isAdmin == true)
             NavigationDestination(
               selectedIcon: Icon(
@@ -68,9 +70,10 @@ class _HomePageState extends State<HomePage> {
         const DesafiosPage(),
 
         /// Profile page
-        DetailJogadorRankingPage(
-          usuario: Modular.get<AuthController>().usuario!,
-        ),
+        if (Modular.get<AuthController>().usuario?.login != Env.userLogin)
+          DetailJogadorRankingPage(
+            uidUsuario: Modular.get<AuthController>().usuario!.uid,
+          ),
 
         /// Admin page
         if (Modular.get<AuthController>().usuario?.isAdmin == true)

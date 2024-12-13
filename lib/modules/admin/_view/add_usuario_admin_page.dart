@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddUsuarioAdminPage extends StatefulWidget {
@@ -36,7 +36,7 @@ class _AddUsuarioAdminPageState extends State<AddUsuarioAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Modular.get<AdminController>();
+    final controller = Modular.get<JogadorController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -61,7 +61,7 @@ class _AddUsuarioAdminPageState extends State<AddUsuarioAdminPage> {
                     return 'Nome deve ter mais de 2 caracteres';
                   }
 
-                  if (controller.usuarios.any(
+                  if (controller.jogadores.any(
                     (u) => u?.login.toLowerCase() == value.toLowerCase(),
                   )) {
                     return 'Login já existe';
@@ -94,11 +94,11 @@ class _AddUsuarioAdminPageState extends State<AddUsuarioAdminPage> {
               FilledButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    final usuario = UsuarioModel(
+                    final usuario = JogadorModel(
                       login: _loginController.text.toLowerCase(),
                       senha: _senhaController.text,
                     );
-                    final success = await controller.addUsuario(usuario);
+                    final success = await controller.addJogador(usuario);
 
                     if (success && context.mounted) {
                       _showPlayerInfoModal(

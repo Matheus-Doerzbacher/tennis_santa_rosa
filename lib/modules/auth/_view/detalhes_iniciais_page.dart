@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
+import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 
 class DetalhesIniciaisPage extends StatefulWidget {
   const DetalhesIniciaisPage({super.key});
@@ -33,20 +35,22 @@ class _DetalhesIniciaisPageState extends State<DetalhesIniciaisPage> {
   Future<void> onSubmit() async {
     try {
       if (_formKey.currentState!.validate()) {
-        final controller = Modular.get<AuthController>();
+        final controller = Modular.get<JogadorController>();
 
-        final usuario = UsuarioModel(
-          uid: controller.usuario?.uid,
+        final jogador = JogadorModel(
+          uid: controller.jogadorLogado?.uid,
           nome: _nomeController.text,
           telefone: _telefoneController.text,
-          senha: _senha1Controller.text,
-          login: controller.usuario?.login ?? '',
-          posicaoRankingAtual: controller.usuario?.posicaoRankingAtual ?? 0,
+          senha: encryptPassword(_senha1Controller.text),
+          login: controller.jogadorLogado?.login ?? '',
+          posicaoRankingAtual:
+              controller.jogadorLogado?.posicaoRankingAtual ?? 0,
           posicaoRankingAnterior:
-              controller.usuario?.posicaoRankingAnterior ?? 0,
+              controller.jogadorLogado?.posicaoRankingAnterior ?? 0,
         );
 
-        await controller.updateUsuario(usuario);
+        await controller.updateJogador(jogador);
+        await Modular.get<AuthController>().updateUsuario(jogador);
 
         Modular.to.navigate('/');
       }

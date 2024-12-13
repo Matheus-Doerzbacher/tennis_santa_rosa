@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 
 class CardDesafioComponent extends StatelessWidget {
   final DesafioModel desafio;
-  final UsuarioModel desafiante;
-  final UsuarioModel desafiado;
+  final JogadorModel desafiante;
+  final JogadorModel desafiado;
   const CardDesafioComponent({
     super.key,
     required this.desafio,
@@ -101,7 +101,7 @@ class CardDesafioComponent extends StatelessWidget {
 
   Widget _buildDesafioResultado({
     required DesafioModel desafio,
-    required UsuarioModel jogador,
+    required JogadorModel jogador,
     required BuildContext context,
     required bool isDesafiante,
   }) {

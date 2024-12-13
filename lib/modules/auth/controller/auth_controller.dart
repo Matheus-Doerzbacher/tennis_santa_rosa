@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/core/utils/repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_login_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/auth/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_jogador_by_login_repository.dart';
 
 class AuthController extends ChangeNotifier {
-  final GetUsuarioByLoginRepository _getUsuarioByLoginRepository;
-  final UpdateUsuarioRepository _updateUsuarioRepository;
+  final GetJogadorByLoginRepository _getJogadorByLoginRepository;
+  // final UpdateJogadoresRepository _updateJogadoresRepository;
 
   AuthController(
-    this._getUsuarioByLoginRepository,
-    this._updateUsuarioRepository,
+    this._getJogadorByLoginRepository,
+    // this._updateJogadoresRepository,
   );
 
-  UsuarioModel? _usuario;
-  UsuarioModel? get usuario => _usuario;
+  UserModel? _usuario;
+  UserModel? get usuario => _usuario;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -28,29 +30,32 @@ class AuthController extends ChangeNotifier {
   Future<bool> login(String login, String senha) async {
     _isLoading = true;
     notifyListeners();
-    UsuarioModel? usuario;
+    UserModel? usuario;
     try {
       if (login == Env.userLogin && senha == Env.userPassword) {
-        usuario = UsuarioModel(
+        usuario = UserModel(
+          uid: '0',
           login: login,
-          senha: senha,
-          posicaoRankingAtual: 0,
-          posicaoRankingAnterior: 0,
           nome: 'Admin',
           isAdmin: true,
         );
       } else {
-        usuario = await _getUsuarioByLoginRepository(login);
+        final jogador = await _getJogadorByLoginRepository(login);
 
         final senhaCriptografada = encryptPassword(senha);
 
-        if (usuario?.senha == null || usuario?.senha != senhaCriptografada) {
+        if (jogador?.senha == null || jogador?.senha != senhaCriptografada) {
           return false;
         }
-      }
+        usuario = UserModel(
+          uid: jogador!.uid!,
+          login: jogador.login,
+          nome: jogador.nome,
+          isAdmin: jogador.isAdmin,
+        );
 
-      if (usuario == null) {
-        return false;
+        await Modular.get<JogadorController>()
+            .updateJogadorLogado(jogador.uid!);
       }
 
       await Repository.save('usuario', usuario.toJson());
@@ -74,10 +79,12 @@ class AuthController extends ChangeNotifier {
       final usuarioJson = await Repository.read('usuario');
 
       if (usuarioJson != null) {
-        _usuario = UsuarioModel.fromJson(usuarioJson);
+        _usuario = UserModel.fromJson(usuarioJson);
         notifyListeners();
         return true;
       }
+
+      await Modular.get<JogadorController>().updateJogadorLogado(_usuario!.uid);
       return false;
     } catch (e) {
       dbPrint(e);
@@ -107,17 +114,17 @@ class AuthController extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateUsuario(UsuarioModel usuario) async {
+  Future<bool> updateUsuario(JogadorModel jogador) async {
     try {
-      _isLoading = true;
-      notifyListeners();
-      final result = await _updateUsuarioRepository(usuario);
-      if (result) {
-        _usuario = usuario;
-        await Repository.save('usuario', usuario.toJson());
-        return true;
-      }
-      return false;
+      final usuario = UserModel(
+        uid: jogador.uid!,
+        login: jogador.login,
+        nome: jogador.nome,
+        isAdmin: jogador.isAdmin,
+      );
+      _usuario = usuario;
+      await Repository.save('usuario', usuario.toJson());
+      return true;
     } catch (e) {
       dbPrint(e);
       return false;

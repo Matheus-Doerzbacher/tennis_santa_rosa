@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/stream_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/stream_jogadores_repository.dart';
 
 class RankingController extends ChangeNotifier {
-  final StreamUsuariosRepository _streamUsuariosRepository;
-  RankingController(this._streamUsuariosRepository);
+  final StreamJogadoresRepository _streamJogadoresRepository;
+  RankingController(this._streamJogadoresRepository);
 
-  Stream<List<UsuarioModel>> streamRanking() => _streamUsuariosRepository();
+  Stream<List<JogadorModel>> streamRanking() => _streamJogadoresRepository();
 }

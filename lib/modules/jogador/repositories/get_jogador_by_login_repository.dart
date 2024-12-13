@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
 
-class GetUsuarioByLoginRepository {
-  Future<UsuarioModel?> call(String login) async {
+class GetJogadorByLoginRepository {
+  Future<JogadorModel?> call(String login) async {
     final firestore = FirebaseFirestore.instance;
 
     final docRef = await firestore
@@ -12,7 +12,7 @@ class GetUsuarioByLoginRepository {
 
     if (docRef.docs.isNotEmpty) {
       final usuarioJson = docRef.docs.first.data();
-      final usuario = UsuarioModel.fromJson(usuarioJson);
+      final usuario = JogadorModel.fromJson(usuarioJson);
       return usuario;
     }
     return null;

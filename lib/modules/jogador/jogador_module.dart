@@ -1,36 +1,36 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tennis_santa_rosa/modules/jogador/controller/usuario_controller.dart';
+import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 import 'package:tennis_santa_rosa/modules/jogador/repositories/add_jogador_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_login_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_uid_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_jogador_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_jogador_by_login_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_jogador_by_uid_repository.dart';
 import 'package:tennis_santa_rosa/modules/jogador/repositories/salvar_imagem_jogador_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/stream_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/stream_jogadores_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/update_jogador_repository.dart';
 
 class UsuarioModule extends Module {
   @override
   void exportedBinds(Injector i) {
     i
       ..add(
-        StreamUsuariosRepository.new,
-        key: 'exportedStreamUsuariosRepository',
+        StreamJogadoresRepository.new,
+        key: 'exportedStreamJogadoresRepository',
       )
       ..add(
-        UpdateUsuarioRepository.new,
-        key: 'exportedUpdateUsuarioRepository',
+        UpdateJogadorRepository.new,
+        key: 'exportedUpdateJogadoresRepository',
       )
       ..add(
-        GetUsuarioByLoginRepository.new,
-        key: 'exportedGetUsuarioByLoginRepository',
+        GetJogadorByLoginRepository.new,
+        key: 'exportedGetJogadorByLoginRepository',
       )
       ..add(
-        GetUsuarioByIdRepository.new,
-        key: 'exportedGetUsuarioByIdRepository',
+        GetJogadorByUidRepository.new,
+        key: 'exportedGetJogadorByUidRepository',
       )
       ..add(
-        FetchUsuariosRepository.new,
-        key: 'exportedFetchUsuariosRepository',
+        FetchJogadoresRepository.new,
+        key: 'exportedFetchJogadoresRepository',
       )
       ..add(
         SalvarImagemJogadorRepository.new,
@@ -44,15 +44,22 @@ class UsuarioModule extends Module {
   void binds(Injector i) {
     i
       ..add(AddJogadorRepository.new)
-      ..add(StreamUsuariosRepository.new)
-      ..add(UpdateUsuarioRepository.new)
-      ..add(GetUsuarioByLoginRepository.new)
-      ..add(FetchUsuariosRepository.new)
-      ..add(GetUsuarioByIdRepository.new)
+      ..add(StreamJogadoresRepository.new)
+      ..add(UpdateJogadorRepository.new)
+      ..add(GetJogadorByLoginRepository.new)
+      ..add(FetchJogadoresRepository.new)
+      ..add(GetJogadorByUidRepository.new)
       ..add(SalvarImagemJogadorRepository.new)
       // CONTROLLERS
       ..addLazySingleton(
-        () => UsuarioController(i()),
+        () => JogadorController(
+          i(),
+          i(),
+          i(),
+          i(),
+          i(),
+          i(),
+        ),
       );
     super.binds(i);
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/env.dart';
-import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 
 class RankingPage extends StatelessWidget {
@@ -12,7 +12,7 @@ class RankingPage extends StatelessWidget {
     final controller = context.watch<RankingController>();
 
     // funcao que retorna os dados do desafiante
-    String? nomeDesafiante(String uidDesafiante, List<UsuarioModel> jogadores) {
+    String? nomeDesafiante(String uidDesafiante, List<JogadorModel> jogadores) {
       return jogadores
           .firstWhere(
             (jogador) => jogador.uid == uidDesafiante,
@@ -89,7 +89,7 @@ class RankingPage extends StatelessWidget {
     }
 
     // funcao que retorna o resultado da posicao do ranking anterior
-    dynamic positionRankingAnterior(UsuarioModel jogador) {
+    dynamic positionRankingAnterior(JogadorModel jogador) {
       final result = (jogador.posicaoRankingAnterior ?? 0) -
           (jogador.posicaoRankingAtual ?? 0);
       Widget? icon;
@@ -126,7 +126,7 @@ class RankingPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Ranking'),
       ),
-      body: StreamBuilder<List<UsuarioModel>>(
+      body: StreamBuilder<List<JogadorModel>>(
         stream: controller.streamRanking(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -157,7 +157,7 @@ class RankingPage extends StatelessWidget {
                             child: ListTile(
                               onTap: () => Modular.to.pushNamed(
                                 '/ranking/detail-jogador/',
-                                arguments: jogador,
+                                arguments: jogador.uid,
                               ),
                               leading: positionRanking(
                                 jogador.posicaoRankingAtual ?? 0,

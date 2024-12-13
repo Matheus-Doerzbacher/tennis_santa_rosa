@@ -23,6 +23,17 @@ class AdminPage extends StatelessWidget {
               },
               child: const Text('Jogadores'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Modular.get<AuthController>().logout();
+                Modular.to.pushNamed('/auth/login');
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.error,
+                foregroundColor: Theme.of(context).colorScheme.onError,
+              ),
+              child: const Text('Sair'),
+            ),
           ],
         ),
       ),
