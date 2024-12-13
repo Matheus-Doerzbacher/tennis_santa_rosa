@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 
 class GetUsuarioByIdRepository {
   Future<UsuarioModel?> call(String uid) async {

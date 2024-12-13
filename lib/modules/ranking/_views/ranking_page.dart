@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/env.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
 class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
@@ -162,9 +162,25 @@ class RankingPage extends StatelessWidget {
                               leading: positionRanking(
                                 jogador.posicaoRankingAtual ?? 0,
                               ),
-                              title: Text(
-                                jogador.nome ?? jogador.login,
-                                style: Theme.of(context).textTheme.titleMedium,
+                              title: Row(
+                                children: [
+                                  Text(
+                                    jogador.nome ?? jogador.login,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  if (jogador.situacao == Situacao.ferias)
+                                    const Icon(
+                                      Icons.sunny,
+                                      color: Colors.yellow,
+                                    ),
+                                  if (jogador.situacao == Situacao.machucado)
+                                    const Icon(
+                                      Icons.local_hospital,
+                                      color: Colors.red,
+                                    ),
+                                ],
                               ),
                               subtitle: Text(
                                 'Jogos no mês: ${jogador.jogosNoMes}',

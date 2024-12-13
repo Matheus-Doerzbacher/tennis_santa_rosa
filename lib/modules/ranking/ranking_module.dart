@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:provider/provider.dart';
+import 'package:tennis_santa_rosa/modules/jogador/jogador_module.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/detail_jogador_ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/desafios_controller.dart';
@@ -9,7 +10,6 @@ import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_by
 import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_repository%20copy%202.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/stram_desafios_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
 
 class RankingModule extends Module {
   @override

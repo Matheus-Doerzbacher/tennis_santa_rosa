@@ -3,9 +3,9 @@ import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/core/utils/repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_by_login_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_login_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
 
 class AuthController extends ChangeNotifier {
   final GetUsuarioByLoginRepository _getUsuarioByLoginRepository;

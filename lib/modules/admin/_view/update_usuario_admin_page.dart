@@ -6,7 +6,7 @@ import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/_components/selecionar_foto.dart';
 import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 
 class UpdateUsuarioAdminPage extends StatefulWidget {
   final UsuarioModel usuario;

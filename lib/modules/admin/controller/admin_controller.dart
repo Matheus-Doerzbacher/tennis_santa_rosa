@@ -3,24 +3,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/salvar_imagem_jogador_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/stream_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/add_jogador_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/salvar_imagem_jogador_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/stream_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
 
 class AdminController extends ChangeNotifier {
   final StreamUsuariosRepository _streamUsuariosRepository;
   final FetchUsuariosRepository _fetchUsuariosRepository;
-  final AddUsuarioRepository _addUsuarioRepository;
+  final AddJogadorRepository _addJogadorRepository;
   final SalvarImagemJogadorRepository _salvarImageJogadorRepository;
   final UpdateUsuarioRepository _updateUsuarioRepository;
 
   AdminController(
     this._streamUsuariosRepository,
     this._fetchUsuariosRepository,
-    this._addUsuarioRepository,
+    this._addJogadorRepository,
     this._salvarImageJogadorRepository,
     this._updateUsuarioRepository,
   );
@@ -59,7 +59,7 @@ class AdminController extends ChangeNotifier {
         senha: encryptPassword(usuario.senha),
       );
 
-      final success = await _addUsuarioRepository(usuarioAtualizado);
+      final success = await _addJogadorRepository(usuarioAtualizado);
       if (!success) {
         throw Exception('Erro ao adicionar usuário');
       }

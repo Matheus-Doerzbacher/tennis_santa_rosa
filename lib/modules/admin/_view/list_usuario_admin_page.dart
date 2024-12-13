@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 
 class ListUsuarioAdminPage extends StatelessWidget {
   const ListUsuarioAdminPage({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/_components/card_desafio_component.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
 class DetailJogadorRankingPage extends StatefulWidget {
   final UsuarioModel usuario;
@@ -82,19 +82,30 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text('Perfil do Usuário'),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Modular.get<AuthController>().logout();
+                  Modular.to.navigate('/auth/login');
+                },
+                icon: const Icon(Icons.exit_to_app),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.edit),
+              ),
+            ],
+          ),
+        ],
       ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Row(
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Row(
               children: [
                 CircleAvatar(
                   backgroundImage: widget.usuario.urlImage != null
@@ -143,10 +154,8 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Card(
+            const SizedBox(height: 8),
+            Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -176,26 +185,67 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          if (widget.usuario.uid != Modular.get<AuthController>().usuario!.uid)
-            FilledButton.icon(
-              onPressed: podeDesafiar ? onSubmitNovoDesafio : null,
-              icon: controller.isLoadingButton ? null : const Icon(Icons.stars),
-              label: controller.isLoadingButton
-                  ? const CircularProgressIndicator()
-                  : const Text('Desafiar pelo ranking'),
-            ),
-          if (controller.isLoading)
-            const Expanded(
-              child: Center(
-                child: CircularProgressIndicator(),
+            const SizedBox(height: 8),
+            if (widget.usuario.situacao == Situacao.ferias)
+              _buildCardSituacao(
+                'Jogador em férias',
+                Icons.sunny,
+                Colors.yellow,
               ),
-            )
-          else
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
+            if (widget.usuario.situacao == Situacao.machucado)
+              _buildCardSituacao(
+                'Jogador machucado',
+                Icons.local_hospital,
+                Colors.red,
+              ),
+            if (desafioPendente?.idUsuarioDesafiante == widget.usuario.uid!)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  FilledButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.check),
+                    label: const Text('Subir resultado'),
+                  ),
+                  FilledButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.close),
+                    label: const Text('Cancelar'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                ],
+              ),
+            if (desafioPendente?.idUsuarioDesafiado == widget.usuario.uid!)
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.close),
+                label: const Text('Recusar desafio'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            const SizedBox(height: 8),
+            if (widget.usuario.uid !=
+                Modular.get<AuthController>().usuario!.uid)
+              FilledButton.icon(
+                onPressed: podeDesafiar ? onSubmitNovoDesafio : null,
+                icon:
+                    controller.isLoadingButton ? null : const Icon(Icons.stars),
+                label: controller.isLoadingButton
+                    ? const CircularProgressIndicator()
+                    : const Text('Desafiar pelo ranking'),
+              ),
+            const SizedBox(height: 8),
+            if (controller.isLoading)
+              const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            else
+              Expanded(
                 child: ListView.builder(
                   itemCount: controller.desafios.length,
                   itemBuilder: (context, index) => CardDesafioComponent(
@@ -209,8 +259,8 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -237,6 +287,22 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
+    );
+  }
+
+  Widget _buildCardSituacao(String mensagem, IconData icon, Color color) {
+    return Card(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(mensagem),
+            const SizedBox(width: 8),
+            Icon(icon, color: color),
+          ],
+        ),
+      ),
     );
   }
 }

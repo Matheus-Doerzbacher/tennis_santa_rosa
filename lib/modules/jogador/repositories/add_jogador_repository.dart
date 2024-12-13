@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
 
-class AddUsuarioRepository {
+class AddJogadorRepository {
   Future<bool> call(UsuarioModel usuario) async {
     try {
       final firestore = FirebaseFirestore.instance;

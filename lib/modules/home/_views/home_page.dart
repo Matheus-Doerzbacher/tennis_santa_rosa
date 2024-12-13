@@ -5,7 +5,6 @@ import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/desafios_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/detail_jogador_ranking_page.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/ranking_page.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_view/detail_usuario_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

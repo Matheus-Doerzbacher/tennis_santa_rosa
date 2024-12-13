@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tennis_santa_rosa/modules/auth/_view/detalhes_iniciais_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/_view/login_page.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
+import 'package:tennis_santa_rosa/modules/jogador/jogador_module.dart';
 
 class AuthModule extends Module {
   @override

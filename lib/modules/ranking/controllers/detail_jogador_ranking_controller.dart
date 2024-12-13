@@ -3,13 +3,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/env.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
 import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
+import 'package:tennis_santa_rosa/modules/jogador/_model/usuario_model.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/fetch_usuarios_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/get_usuario_by_uid_repository.dart';
+import 'package:tennis_santa_rosa/modules/jogador/repositories/update_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/fetch_desafios_by_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/ranking/repositories/novo_desafio_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/get_usuario_by_uid_repository.dart';
-import 'package:tennis_santa_rosa/modules/usuario/repositories/update_usuario_repository.dart';
 
 class DetailJogadorRankingController extends ChangeNotifier {
   final NovoDesafioRepository _novoDesafioRepository;
@@ -151,6 +151,16 @@ class DetailJogadorRankingController extends ChangeNotifier {
     // Verifica se o ultimo desafio de ambos é o mesmo
     if (usuario.uidUltimoDesafio == usuarioDesafiado.uid &&
         usuarioDesafiado.uidUltimoDesafio == usuario.uid) {
+      return false;
+    }
+
+    // Verifica se é o primeiro dia do mês e se ja passsou das 12:00
+    if (DateTime.now().day == 1 && DateTime.now().hour < 12) {
+      return false;
+    }
+
+    // Verifica se o jogador esta apto para desafiar
+    if (usuario.situacao != Situacao.ativo) {
       return false;
     }
 

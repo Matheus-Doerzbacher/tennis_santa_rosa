@@ -5,7 +5,7 @@ import 'package:tennis_santa_rosa/modules/admin/_view/admin_page.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/list_usuario_admin_page.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/update_usuario_admin_page.dart';
 import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
-import 'package:tennis_santa_rosa/modules/usuario/usuario_module.dart';
+import 'package:tennis_santa_rosa/modules/jogador/jogador_module.dart';
 
 class AdminModule extends Module {
   @override
