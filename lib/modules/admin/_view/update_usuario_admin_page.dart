@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
+import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/modules/admin/_view/_components/selecionar_foto.dart';
 import 'package:tennis_santa_rosa/modules/admin/controller/admin_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
@@ -73,7 +74,7 @@ class _UpdateUsuarioAdminPageState extends State<UpdateUsuarioAdminPage> {
         telefone: _telefoneController.text,
         urlImage: imageUrl,
         senha: _senhaController.text.isNotEmpty
-            ? _senhaController.text
+            ? encryptPassword(_senhaController.text)
             : widget.usuario.senha,
       );
 

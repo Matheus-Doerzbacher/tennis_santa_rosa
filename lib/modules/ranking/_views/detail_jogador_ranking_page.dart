@@ -19,23 +19,32 @@ class DetailJogadorRankingPage extends StatefulWidget {
 
 class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
   DesafioModel? desafioPendente;
+  bool podeDesafiar = false;
   @override
   void initState() {
+    super.initState();
     final controller = Modular.get<DetailJogadorRankingController>();
-    controller.getUsuarios().then((_) {
-      controller.getDesafios(widget.usuario.uid!).then((_) {
-        if (mounted) {
-          setState(
-            () => desafioPendente = controller.desafios
-                .where(
-                  (d) => d.status == StatusDesafio.pendente,
-                )
-                .firstOrNull,
-          );
-        }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getUsuarioLogado().then((_) {
+        controller.getDesafios(widget.usuario.uid!).then((_) {
+          if (mounted) {
+            setState(
+              () => desafioPendente = controller.desafios
+                  .where(
+                    (d) => d.status == StatusDesafio.pendente,
+                  )
+                  .firstOrNull,
+            );
+            setState(() {
+              podeDesafiar = controller.podeDesafiar(
+                controller.usuarioLogado!,
+                widget.usuario,
+              );
+            });
+          }
+        });
       });
     });
-    super.initState();
   }
 
   @override
@@ -140,23 +149,35 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
           const SizedBox(height: 16),
           if (widget.usuario.uid != Modular.get<AuthController>().usuario!.uid)
             FilledButton.icon(
-              onPressed: Modular.get<RankingController>().podeDesafiar(
-                        Modular.get<AuthController>().usuario!,
-                        widget.usuario,
-                      ) ||
-                      controller.isLoading
-                  ? onSubmitNovoDesafio
-                  : null,
-              icon: controller.isLoading
+              onPressed: podeDesafiar ? onSubmitNovoDesafio : null,
+              icon: controller.isLoadingButton ? null : const Icon(Icons.stars),
+              label: controller.isLoadingButton
                   ? const CircularProgressIndicator()
-                  : const Icon(Icons.stars),
-              label: const Text('Desafiar pelo ranking'),
+                  : const Text('Desafiar pelo ranking'),
             ),
-          if (desafioPendente != null)
-            CardDesafioComponent(
-              desafio: desafioPendente!,
-              desafiante: getUsuario(desafioPendente!.idUsuarioDesafiante),
-              desafiado: getUsuario(desafioPendente!.idUsuarioDesafiado),
+          if (controller.isLoading)
+            const Expanded(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          else
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: ListView.builder(
+                  itemCount: controller.desafios.length,
+                  itemBuilder: (context, index) => CardDesafioComponent(
+                    desafio: controller.desafios[index],
+                    desafiante: getUsuario(
+                      controller.desafios[index].idUsuarioDesafiante,
+                    ),
+                    desafiado: getUsuario(
+                      controller.desafios[index].idUsuarioDesafiado,
+                    ),
+                  ),
+                ),
+              ),
             ),
         ],
       ),

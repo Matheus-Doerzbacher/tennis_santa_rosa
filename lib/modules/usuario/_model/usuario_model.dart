@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
-
 enum Situacao {
   ferias,
   machucado,
@@ -27,13 +23,14 @@ class UsuarioModel {
   int jogosNoMes;
   // desafio
   String? uidDesafiante;
+  String? uidUltimoDesafio;
 
   UsuarioModel({
     // informacoes do usuario
     this.uid,
     this.nome,
     required this.login,
-    required String senha,
+    required this.senha,
     this.telefone,
     DateTime? dataCriacao,
     this.urlImage,
@@ -47,14 +44,8 @@ class UsuarioModel {
     this.jogosNoMes = 0,
     // desafio
     this.uidDesafiante,
-  })  : dataCriacao = dataCriacao ?? DateTime.now(),
-        senha = encryptPassword(senha);
-
-  static String encryptPassword(String password) {
-    final bytes = utf8.encode(password);
-    final digest = sha256.convert(bytes);
-    return digest.toString();
-  }
+    this.uidUltimoDesafio,
+  }) : dataCriacao = dataCriacao ?? DateTime.now();
 
   bool get temDesafio => uidDesafiante?.isNotEmpty == true;
 
@@ -64,7 +55,7 @@ class UsuarioModel {
       uid: json['uid'],
       nome: json['nome'],
       login: json['login'],
-      senha: '',
+      senha: json['senha'],
       telefone: json['telefone'],
       dataCriacao: DateTime.parse(json['dataCriacao']),
       urlImage: json['urlImage'],
@@ -80,7 +71,8 @@ class UsuarioModel {
       jogosNoMes: json['jogosNoMes'],
       // desafio
       uidDesafiante: json['uidDesafiante'],
-    )..senha = json['senha'];
+      uidUltimoDesafio: json['uidUltimoDesafio'],
+    );
 
     return usuario;
   }
@@ -102,6 +94,7 @@ class UsuarioModel {
       'urlImage': urlImage,
       'isAdmin': isAdmin,
       'uidDesafiante': uidDesafiante,
+      'uidUltimoDesafio': uidUltimoDesafio,
     };
   }
 
@@ -121,6 +114,8 @@ class UsuarioModel {
     String? urlImage,
     bool? isAdmin,
     String? uidDesafiante,
+    String? uidUltimoDesafio,
+    DateTime? dataUltimoDesafio,
   }) {
     return UsuarioModel(
       uid: uid ?? this.uid,
@@ -139,6 +134,7 @@ class UsuarioModel {
       urlImage: urlImage ?? this.urlImage,
       isAdmin: isAdmin ?? this.isAdmin,
       uidDesafiante: uidDesafiante ?? this.uidDesafiante,
+      uidUltimoDesafio: uidUltimoDesafio ?? this.uidUltimoDesafio,
     );
   }
 }

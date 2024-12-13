@@ -21,6 +21,19 @@ class CardDesafioComponent extends StatelessWidget {
       return word[0].toUpperCase() + word.substring(1);
     }
 
+    String formatDate(DateTime date) {
+      return DateFormat(
+        "EEE dd 'de' MMM",
+        'pt_BR',
+      )
+          .format(date)
+          .split(' ')
+          .map(
+            (word) => word == 'de' ? word : capitalize(word),
+          )
+          .join(' ');
+    }
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -32,26 +45,16 @@ class CardDesafioComponent extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Data Desafio: ${DateFormat(
-                        "EEE dd 'de' MMM",
-                        'pt_BR',
-                      ).format(desafio.data).split(' ').map(
-                            (word) => word == 'de' ? word : capitalize(word),
-                          ).join(' ')}',
+                      'Data Desafio: ${formatDate(desafio.data)}',
                       textAlign: TextAlign.right,
                     ),
                   ),
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Vence: ${DateFormat(
-                        "EEE dd 'de' MMM",
-                        'pt_BR',
-                      ).format(
-                            desafio.data.add(const Duration(days: 8)),
-                          ).split(' ').map(
-                            (word) => word == 'de' ? word : capitalize(word),
-                          ).join(' ')}',
+                      'Vence: ${formatDate(
+                        desafio.data.add(const Duration(days: 8)),
+                      )}',
                       textAlign: TextAlign.right,
                     ),
                   ),

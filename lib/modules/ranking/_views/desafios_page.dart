@@ -13,26 +13,14 @@ class DesafiosPage extends StatefulWidget {
 }
 
 class _DesafiosPageState extends State<DesafiosPage> {
-  List<UsuarioModel> usuarios = [];
-
-  @override
-  void initState() {
-    Modular.get<DesafiosController>().getUsuarios().then((value) {
-      if (mounted) {
-        setState(() {
-          usuarios.addAll(value);
-        });
-      }
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final controller = Modular.get<DesafiosController>();
 
-    UsuarioModel getUsuario(String uidJogador) {
-      return usuarios.firstWhere((usuario) => usuario.uid == uidJogador);
+    UsuarioModel? getUsuario(String uidJogador) {
+      return controller.usuarios
+          .where((usuario) => usuario.uid == uidJogador)
+          .firstOrNull;
     }
 
     return Scaffold(
@@ -61,8 +49,8 @@ class _DesafiosPageState extends State<DesafiosPage> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: CardDesafioComponent(
                     desafio: desafio,
-                    desafiante: desafiante,
-                    desafiado: desafiado,
+                    desafiante: desafiante!,
+                    desafiado: desafiado!,
                   ),
                 );
               },

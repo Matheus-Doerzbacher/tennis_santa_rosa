@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:tennis_santa_rosa/core/utils/db_print.dart';
+import 'package:tennis_santa_rosa/core/utils/encryptPassword.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/add_usuario_repository.dart';
 import 'package:tennis_santa_rosa/modules/usuario/repositories/fetch_usuarios_repository.dart';
@@ -55,6 +56,7 @@ class AdminController extends ChangeNotifier {
       final usuarioAtualizado = usuario.copyWith(
         posicaoRankingAtual: usuarios.length + 1,
         posicaoRankingAnterior: usuarios.length + 1,
+        senha: encryptPassword(usuario.senha),
       );
 
       final success = await _addUsuarioRepository(usuarioAtualizado);
