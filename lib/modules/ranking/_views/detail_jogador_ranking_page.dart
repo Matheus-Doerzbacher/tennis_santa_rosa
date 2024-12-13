@@ -4,7 +4,6 @@ import 'package:tennis_santa_rosa/modules/auth/controller/auth_controller.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 import 'package:tennis_santa_rosa/modules/ranking/_views/_components/card_desafio_component.dart';
 import 'package:tennis_santa_rosa/modules/ranking/controllers/detail_jogador_ranking_controller.dart';
-import 'package:tennis_santa_rosa/modules/ranking/controllers/ranking_controller.dart';
 import 'package:tennis_santa_rosa/modules/usuario/_model/usuario_model.dart';
 
 class DetailJogadorRankingPage extends StatefulWidget {
@@ -118,6 +117,30 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const Spacer(),
+                const Text('Resultados:'),
+                const SizedBox(width: 8),
+                Text(
+                  controller.desafios
+                      .where((d) => d.idUsuarioVencedor == widget.usuario.uid)
+                      .length
+                      .toString(),
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const Text(' / '),
+                Text(
+                  controller.desafios
+                      .where((d) => d.idUsuarioPerdedor == widget.usuario.uid)
+                      .length
+                      .toString(),
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ],
             ),
           ),
@@ -138,6 +161,14 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                     _buildStatCard(
                       'Jogos no mes',
                       widget.usuario.jogosNoMes,
+                      Icons.exposure_plus_2,
+                      context,
+                    ),
+                    _buildStatCard(
+                      'Total de Jogos',
+                      controller.desafios
+                          .where((d) => d.status == StatusDesafio.finalizado)
+                          .length,
                       Icons.sports_tennis,
                       context,
                     ),
@@ -192,21 +223,18 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
   ) {
     return Column(
       children: [
-        Icon(icon, size: 30, color: Theme.of(context).colorScheme.primary),
+        Icon(icon, size: 25, color: Theme.of(context).colorScheme.primary),
         const SizedBox(height: 8),
         Text(
           count.toString(),
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],
     );

@@ -136,21 +136,25 @@ class DetailJogadorRankingController extends ChangeNotifier {
   }
 
   bool podeDesafiar(UsuarioModel usuario, UsuarioModel usuarioDesafiado) {
+    // Verifica se o jogador é o mesmo do desafiado
     if (usuario.uid == usuarioDesafiado.uid) {
       return false;
     }
+    // Verifica se o jogador está na frente do desafiado
     if (usuario.posicaoRankingAtual! < usuarioDesafiado.posicaoRankingAtual!) {
       return false;
     }
+    // Verifica se o jogador já tem um desafio pendente
     if (usuario.temDesafio || usuarioDesafiado.temDesafio) {
       return false;
     }
+    // Verifica se o ultimo desafio de ambos é o mesmo
     if (usuario.uidUltimoDesafio == usuarioDesafiado.uid &&
         usuarioDesafiado.uidUltimoDesafio == usuario.uid) {
       return false;
     }
 
-    // Verifica se o usuário venceu o último jogo
+    // Verifica se o usuário perdeu o último jogo e se ainda está no prazo
     if (usuario.venceuUltimoJogo != null && !usuario.venceuUltimoJogo!) {
       final agora = DateTime.now();
       final dataLimite = DateTime(
@@ -165,6 +169,26 @@ class DetailJogadorRankingController extends ChangeNotifier {
       }
     }
 
+    // Verifica se o desafiado venceu o ultimo jogo
+    // e se ainda está no prazo de não receber um desafio
+    if (usuarioDesafiado.venceuUltimoJogo != null &&
+        usuarioDesafiado.venceuUltimoJogo!) {
+      final agora = DateTime.now();
+      final dataLimite = DateTime(
+        usuarioDesafiado.dataUltimoJogo!.year,
+        usuarioDesafiado.dataUltimoJogo!.month,
+        usuarioDesafiado.dataUltimoJogo!.day + 1,
+        12, // Meio-dia
+      );
+
+      if (agora.isBefore(dataLimite)) {
+        return false;
+      }
+    }
+
+    // Verifica se o usuário e o desafiado estão no mesmo grupo
+    // e se o usariu esta entre os 2 primeiros do seu grupo
+    // e se o desafiado esta entre os 2 ultimos do grupo acima
     const qtdeJogadoresPorGrupo = Env.jogadoresPorGrupo;
 
     // Nova lógica para grupos
