@@ -7,7 +7,7 @@ import 'package:tennis_santa_rosa/modules/jogador/jogador_module.dart';
 
 class AuthModule extends Module {
   @override
-  List<Module> get imports => [UsuarioModule()];
+  List<Module> get imports => [JogadorModule()];
 
   @override
   void binds(Injector i) {

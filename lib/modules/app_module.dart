@@ -10,7 +10,7 @@ class AppModule extends Module {
   @override
   void binds(Injector i) {
     AuthModule().binds(i);
-    UsuarioModule().binds(i);
+    JogadorModule().binds(i);
     RankingModule().binds(i);
   }
 
@@ -33,8 +33,8 @@ class AppModule extends Module {
         guards: [AuthGuard(), AdminGuard()],
       )
       ..module(
-        '/usuario',
-        module: UsuarioModule(),
+        '/jogador',
+        module: JogadorModule(),
         guards: [AuthGuard()],
       )
       ..module('/auth', module: AuthModule());

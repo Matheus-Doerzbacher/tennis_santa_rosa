@@ -8,15 +8,15 @@ import 'package:tennis_santa_rosa/modules/admin/_view/_components/selecionar_fot
 import 'package:tennis_santa_rosa/modules/jogador/_model/jogador_model.dart';
 import 'package:tennis_santa_rosa/modules/jogador/controller/jogador_controller.dart';
 
-class UpdateJogadorAdminPage extends StatefulWidget {
+class UpdateJogadorPage extends StatefulWidget {
   final JogadorModel jogador;
-  const UpdateJogadorAdminPage({super.key, required this.jogador});
+  const UpdateJogadorPage({super.key, required this.jogador});
 
   @override
-  State<UpdateJogadorAdminPage> createState() => _UpdateJogadorAdminPageState();
+  State<UpdateJogadorPage> createState() => _UpdateJogadorPageState();
 }
 
-class _UpdateJogadorAdminPageState extends State<UpdateJogadorAdminPage> {
+class _UpdateJogadorPageState extends State<UpdateJogadorPage> {
   final controller = Modular.get<JogadorController>();
 
   final _formKey = GlobalKey<FormState>();

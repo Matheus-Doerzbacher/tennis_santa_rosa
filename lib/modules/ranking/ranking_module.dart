@@ -13,7 +13,7 @@ import 'package:tennis_santa_rosa/modules/ranking/repositories/stram_desafios_re
 
 class RankingModule extends Module {
   @override
-  List<Module> get imports => [UsuarioModule()];
+  List<Module> get imports => [JogadorModule()];
 
   @override
   void binds(Injector i) {

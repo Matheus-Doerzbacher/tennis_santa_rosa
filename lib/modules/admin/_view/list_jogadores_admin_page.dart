@@ -56,7 +56,7 @@ class ListJogadoresAdminPage extends StatelessWidget {
                                 trailing: IconButton(
                                   onPressed: () {
                                     Modular.to.pushNamed(
-                                      '/admin/update-usuario',
+                                      '/jogador/update-usuario',
                                       arguments: usuario,
                                     );
                                   },

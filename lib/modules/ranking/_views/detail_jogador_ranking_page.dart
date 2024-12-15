@@ -93,21 +93,28 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
       appBar: AppBar(
         title: const Text('Perfil do Usuário'),
         actions: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Modular.get<AuthController>().logout();
-                  Modular.to.navigate('/auth/login');
-                },
-                icon: const Icon(Icons.exit_to_app),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.edit),
-              ),
-            ],
-          ),
+          if (usuario != null &&
+              Modular.get<AuthController>().usuario?.uid == usuario?.uid)
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Modular.get<AuthController>().logout();
+                    Modular.to.navigate('/auth/login');
+                  },
+                  icon: const Icon(Icons.exit_to_app),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Modular.to.pushNamed(
+                      '/jogador/update-usuario',
+                      arguments: usuario,
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
+              ],
+            ),
         ],
       ),
       body: usuario == null
@@ -139,7 +146,12 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Spacer(),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       const Text('Resultados:'),
                       const SizedBox(width: 8),
                       Text(
@@ -167,7 +179,6 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
