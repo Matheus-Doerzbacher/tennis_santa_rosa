@@ -62,8 +62,8 @@ class _DesafiosPageState extends State<DesafiosPage> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: CardDesafioComponent(
                       desafio: desafio,
-                      desafiante: desafiante!,
-                      desafiado: desafiado!,
+                      desafiante: desafiante,
+                      desafiado: desafiado,
                     ),
                   );
                 }).toList(),
@@ -82,8 +82,8 @@ class _DesafiosPageState extends State<DesafiosPage> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: CardDesafioComponent(
                       desafio: desafio,
-                      desafiante: desafiante!,
-                      desafiado: desafiado!,
+                      desafiante: desafiante,
+                      desafiado: desafiado,
                     ),
                   );
                 }).toList(),

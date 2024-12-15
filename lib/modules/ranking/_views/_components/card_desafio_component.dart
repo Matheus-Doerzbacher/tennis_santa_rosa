@@ -5,8 +5,8 @@ import 'package:tennis_santa_rosa/modules/ranking/_models/desafio_model.dart';
 
 class CardDesafioComponent extends StatelessWidget {
   final DesafioModel desafio;
-  final JogadorModel desafiante;
-  final JogadorModel desafiado;
+  final JogadorModel? desafiante;
+  final JogadorModel? desafiado;
   const CardDesafioComponent({
     super.key,
     required this.desafio,
@@ -16,6 +16,8 @@ class CardDesafioComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (desafiante == null || desafiado == null) return const SizedBox.shrink();
+
     String capitalize(String word) {
       if (word.isEmpty) return word;
       return word[0].toUpperCase() + word.substring(1);
@@ -79,7 +81,7 @@ class CardDesafioComponent extends StatelessWidget {
             // DESAFIANTE
             _buildDesafioResultado(
               desafio: desafio,
-              jogador: desafiante,
+              jogador: desafiante!,
               context: context,
               isDesafiante: true,
             ),
@@ -87,7 +89,7 @@ class CardDesafioComponent extends StatelessWidget {
             // DESAFIADO
             _buildDesafioResultado(
               desafio: desafio,
-              jogador: desafiado,
+              jogador: desafiado!,
               context: context,
               isDesafiante: false,
             ),

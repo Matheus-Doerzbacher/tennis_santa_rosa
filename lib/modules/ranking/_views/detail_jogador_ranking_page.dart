@@ -59,8 +59,10 @@ class _DetailJogadorRankingPageState extends State<DetailJogadorRankingPage> {
   Widget build(BuildContext context) {
     final controller = context.watch<DetailJogadorRankingController>();
 
-    JogadorModel getUsuario(String uid) {
-      return controller.jogadores.firstWhere((element) => element.uid == uid);
+    JogadorModel? getUsuario(String uid) {
+      return controller.jogadores
+          .where((element) => element.uid == uid)
+          .firstOrNull;
     }
 
     Future<void> onSubmitNovoDesafio() async {
